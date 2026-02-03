@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Github, FileText, Mail, Lock } from 'lucide-react';
+import { Github, FileText, Mail } from 'lucide-react';
 import { useRequestAccess } from '../context/RequestAccessContext';
 
 export function Footer() {
@@ -43,11 +43,12 @@ export function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <Link to="/" className="flex items-center gap-3 mb-4 w-fit">
-              <div className="w-8 h-8 bg-gradient-to-br from-loggie-purple to-loggie-cyan rounded-lg flex items-center justify-center">
-                <Lock className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-loggie-purple hover:text-loggie-cyan transition-colors">LOGGIE</span>
+            <Link to="/" className="inline-block mb-4">
+              <img
+                src="/loggie-nav-logo-phase-2.png"
+                alt="Loggie Home"
+                className="h-8 w-auto"
+              />
             </Link>
             <p className="text-gray-400 text-sm mb-3">
               Permanent, verifiable blockchain proof for any digital asset.
