@@ -8,14 +8,13 @@ export function Footer() {
 
   const links = {
     product: [
-      { label: 'Launch App', href: '/app', internal: true },
+      { label: 'Request Pilot Access', href: '#request-access', requestAccess: true },
       { label: 'How It Works', href: '#how-it-works' },
       { label: 'Use Cases', href: '#use-cases' },
     ],
     developers: [
       { label: 'Documentation', href: 'https://docs.loggie.xyz', external: true },
-      { label: 'GitHub', href: 'https://github.com/loggie-xyz', external: true },
-      { label: 'SDK Reference', href: 'https://docs.loggie.xyz/sdk', external: true },
+      { label: 'Developer Access (Pilot)', href: '#request-access', requestAccess: true },
     ],
     company: [
       { label: 'About', href: '#about' },
@@ -58,10 +57,14 @@ export function Footer() {
             <ul className="space-y-2">
               {links.product.map((link) => (
                 <li key={link.label}>
-                  {link.internal ? (
-                    <Link to={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">
+                  {'requestAccess' in link && link.requestAccess ? (
+                    <a
+                      href={link.href}
+                      onClick={handleRequestAccessClick}
+                      className="text-gray-400 hover:text-white text-sm transition-colors"
+                    >
                       {link.label}
-                    </Link>
+                    </a>
                   ) : (
                     <a href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">
                       {link.label}
@@ -78,15 +81,25 @@ export function Footer() {
             <ul className="space-y-2">
               {links.developers.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    target={link.external ? '_blank' : undefined}
-                    rel={link.external ? 'noopener noreferrer' : undefined}
-                    className="text-gray-400 hover:text-white text-sm transition-colors inline-flex items-center gap-1"
-                  >
-                    {link.label}
-                    {link.external && <ExternalLink className="w-3 h-3" />}
-                  </a>
+                  {'requestAccess' in link && link.requestAccess ? (
+                    <a
+                      href={link.href}
+                      onClick={handleRequestAccessClick}
+                      className="text-gray-400 hover:text-white text-sm transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <a
+                      href={link.href}
+                      target={link.external ? '_blank' : undefined}
+                      rel={link.external ? 'noopener noreferrer' : undefined}
+                      className="text-gray-400 hover:text-white text-sm transition-colors inline-flex items-center gap-1"
+                    >
+                      {link.label}
+                      {link.external && <ExternalLink className="w-3 h-3" />}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
