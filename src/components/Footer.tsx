@@ -1,26 +1,39 @@
-import { Link } from 'react-router-dom';
-import { Github, FileText, Mail, ExternalLink, Lock } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Github, FileText, Mail, Lock } from 'lucide-react';
 import { useRequestAccess } from '../context/RequestAccessContext';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
   const { handleRequestAccessClick } = useRequestAccess();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHomePage = location.pathname === '/';
+
+  const handleHashClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+    e.preventDefault();
+    if (isHomePage) {
+      const element = document.getElementById(hash);
+      element?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate(`/#${hash}`);
+    }
+  };
 
   const links = {
     product: [
-      { label: 'Request Pilot Access', href: '#request-access', requestAccess: true },
-      { label: 'How It Works', href: '#how-it-works' },
-      { label: 'Use Cases', href: '#use-cases' },
+      { label: 'Request Pilot Access', requestAccess: true },
+      { label: 'How It Works', hash: 'how-it-works' },
+      { label: 'Use Cases', hash: 'use-cases' },
     ],
     developers: [
-      { label: 'Documentation', href: '/docs', internal: true },
-      { label: 'Developer Access (Pilot)', href: '#request-access', requestAccess: true },
+      { label: 'Documentation', to: '/docs' },
+      { label: 'Developer Access (Pilot)', requestAccess: true },
     ],
     company: [
-      { label: 'About', href: '#about' },
-      { label: 'Contact', href: '#request-access', requestAccess: true },
-      { label: 'Privacy Policy', href: '/privacy', internal: true },
-      { label: 'Terms of Service', href: '/terms', internal: true },
+      { label: 'About', hash: 'about' },
+      { label: 'Contact', requestAccess: true },
+      { label: 'Privacy Policy', to: '/privacy' },
+      { label: 'Terms of Service', to: '/terms' },
     ],
   };
 
@@ -30,12 +43,12 @@ export function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
+            <Link to="/" className="flex items-center gap-3 mb-4 w-fit">
               <div className="w-8 h-8 bg-gradient-to-br from-loggie-purple to-loggie-cyan rounded-lg flex items-center justify-center">
                 <Lock className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-loggie-purple">LOGGIE</span>
-            </div>
+              <span className="text-xl font-bold text-loggie-purple hover:text-loggie-cyan transition-colors">LOGGIE</span>
+            </Link>
             <p className="text-gray-400 text-sm mb-3">
               Permanent, verifiable blockchain proof for any digital asset.
             </p>
@@ -59,17 +72,28 @@ export function Footer() {
                 <li key={link.label}>
                   {'requestAccess' in link && link.requestAccess ? (
                     <a
-                      href={link.href}
+                      href="#request-access"
                       onClick={handleRequestAccessClick}
                       className="text-gray-400 hover:text-white text-sm transition-colors"
                     >
                       {link.label}
                     </a>
-                  ) : (
-                    <a href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">
+                  ) : 'hash' in link ? (
+                    <a
+                      href={`/#${link.hash}`}
+                      onClick={(e) => handleHashClick(e, link.hash!)}
+                      className="text-gray-400 hover:text-white text-sm transition-colors"
+                    >
                       {link.label}
                     </a>
-                  )}
+                  ) : 'to' in link ? (
+                    <Link
+                      to={link.to!}
+                      className="text-gray-400 hover:text-white text-sm transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : null}
                 </li>
               ))}
             </ul>
@@ -83,30 +107,20 @@ export function Footer() {
                 <li key={link.label}>
                   {'requestAccess' in link && link.requestAccess ? (
                     <a
-                      href={link.href}
+                      href="#request-access"
                       onClick={handleRequestAccessClick}
                       className="text-gray-400 hover:text-white text-sm transition-colors"
                     >
                       {link.label}
                     </a>
-                  ) : 'internal' in link && link.internal ? (
+                  ) : 'to' in link ? (
                     <Link
-                      to={link.href}
+                      to={link.to!}
                       className="text-gray-400 hover:text-white text-sm transition-colors"
                     >
                       {link.label}
                     </Link>
-                  ) : (
-                    <a
-                      href={link.href}
-                      target={'external' in link && link.external ? '_blank' : undefined}
-                      rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
-                      className="text-gray-400 hover:text-white text-sm transition-colors inline-flex items-center gap-1"
-                    >
-                      {link.label}
-                      {'external' in link && link.external && <ExternalLink className="w-3 h-3" />}
-                    </a>
-                  )}
+                  ) : null}
                 </li>
               ))}
             </ul>
@@ -120,24 +134,28 @@ export function Footer() {
                 <li key={link.label}>
                   {'requestAccess' in link && link.requestAccess ? (
                     <a
-                      href={link.href}
+                      href="#request-access"
                       onClick={handleRequestAccessClick}
                       className="text-gray-400 hover:text-white text-sm transition-colors"
                     >
                       {link.label}
                     </a>
-                  ) : 'internal' in link && link.internal ? (
+                  ) : 'hash' in link ? (
+                    <a
+                      href={`/#${link.hash}`}
+                      onClick={(e) => handleHashClick(e, link.hash!)}
+                      className="text-gray-400 hover:text-white text-sm transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  ) : 'to' in link ? (
                     <Link
-                      to={link.href}
+                      to={link.to!}
                       className="text-gray-400 hover:text-white text-sm transition-colors"
                     >
                       {link.label}
                     </Link>
-                  ) : (
-                    <a href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">
-                      {link.label}
-                    </a>
-                  )}
+                  ) : null}
                 </li>
               ))}
             </ul>
