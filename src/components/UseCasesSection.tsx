@@ -4,25 +4,25 @@ const useCases = [
   {
     icon: Bot,
     title: 'Immutable AI Outputs',
-    description: 'Prove exactly what an AI generated, when it was created, and by whom.',
+    description: 'Prove exactly what an AI generated, when it was created, and by whom — even if the original system changes.',
     iconColor: 'text-purple-400',
   },
   {
     icon: FileCheck,
     title: 'On-chain Proof of Files',
-    description: 'Create permanent, verifiable timestamps for any digital file.',
+    description: 'Create permanent, independently verifiable timestamps for any digital file.',
     iconColor: 'text-cyan-400',
   },
   {
     icon: ClipboardList,
     title: 'Audit & Compliance Logs',
-    description: 'Maintain tamper-proof records for audits, compliance, and legal evidence.',
+    description: 'Maintain tamper-resistant records designed to hold up under audit, compliance review, and legal scrutiny.',
     iconColor: 'text-green-400',
   },
   {
     icon: Code,
     title: 'Developer Infrastructure',
-    description: 'Embed verification directly into your applications using SDKs and CLIs.',
+    description: 'Embed independent verification directly into applications using SDKs and CLIs.',
     iconColor: 'text-orange-400',
   },
 ];
