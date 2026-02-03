@@ -13,14 +13,14 @@ export function Footer() {
       { label: 'Use Cases', href: '#use-cases' },
     ],
     developers: [
-      { label: 'Documentation', href: 'https://docs.loggie.xyz', external: true },
+      { label: 'Documentation', href: '/docs', internal: true },
       { label: 'Developer Access (Pilot)', href: '#request-access', requestAccess: true },
     ],
     company: [
       { label: 'About', href: '#about' },
       { label: 'Contact', href: '#request-access', requestAccess: true },
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Terms of Service', href: '/terms' },
+      { label: 'Privacy Policy', href: '/privacy', internal: true },
+      { label: 'Terms of Service', href: '/terms', internal: true },
     ],
   };
 
@@ -89,15 +89,22 @@ export function Footer() {
                     >
                       {link.label}
                     </a>
+                  ) : 'internal' in link && link.internal ? (
+                    <Link
+                      to={link.href}
+                      className="text-gray-400 hover:text-white text-sm transition-colors"
+                    >
+                      {link.label}
+                    </Link>
                   ) : (
                     <a
                       href={link.href}
-                      target={link.external ? '_blank' : undefined}
-                      rel={link.external ? 'noopener noreferrer' : undefined}
+                      target={'external' in link && link.external ? '_blank' : undefined}
+                      rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
                       className="text-gray-400 hover:text-white text-sm transition-colors inline-flex items-center gap-1"
                     >
                       {link.label}
-                      {link.external && <ExternalLink className="w-3 h-3" />}
+                      {'external' in link && link.external && <ExternalLink className="w-3 h-3" />}
                     </a>
                   )}
                 </li>
@@ -119,6 +126,13 @@ export function Footer() {
                     >
                       {link.label}
                     </a>
+                  ) : 'internal' in link && link.internal ? (
+                    <Link
+                      to={link.href}
+                      className="text-gray-400 hover:text-white text-sm transition-colors"
+                    >
+                      {link.label}
+                    </Link>
                   ) : (
                     <a href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">
                       {link.label}
@@ -144,14 +158,12 @@ export function Footer() {
             >
               <Github className="w-5 h-5" />
             </a>
-            <a
-              href="https://docs.loggie.xyz"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/docs"
               className="text-gray-500 hover:text-white transition-colors"
             >
               <FileText className="w-5 h-5" />
-            </a>
+            </Link>
             <a
               href="#request-access"
               onClick={handleRequestAccessClick}
