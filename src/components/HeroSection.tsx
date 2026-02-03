@@ -37,7 +37,7 @@ export function HeroSection() {
             {/* Supporting line - infrastructure positioning */}
             <p className="text-sm text-gray-500 mb-8">
               Loggie provides an independent verification layer for systems
-              where record integrity must hold up under scrutiny.
+              where record integrity must hold up under audit, dispute, or investigation.
             </p>
 
             {/* CTAs - pilot-first funnel */}
