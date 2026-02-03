@@ -30,7 +30,7 @@ export function Navbar() {
           {/* Logo */}
           <a href="#hero" className="flex items-center">
             <img
-              src="/assets/marketing/loggie-logo.png"
+              src="/loggie-nav-logo-phase-1.png"
               alt="Loggie"
               className="h-9 w-auto"
             />
