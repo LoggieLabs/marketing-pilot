@@ -1,21 +1,14 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+// Standalone Loggie marketing page configuration
 export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
   },
+  base: './', // Use relative paths for static hosting
   build: {
-    outDir: 'dist',
-    sourcemap: false,
-    // Marketing page should be small and fast
-    rollupOptions: {
-      output: {
-        manualChunks: undefined, // Keep it simple, one chunk
-      },
-    },
+    target: 'esnext',
   },
-  base: './', // Use relative paths for flexible deployment
-});
+})
