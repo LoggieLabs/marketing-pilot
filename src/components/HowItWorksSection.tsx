@@ -6,25 +6,25 @@ const steps = [
     step: 1,
     icon: FileInput,
     title: 'Select Content',
-    description: 'Select or paste content. Your data never leaves your device unencrypted.',
+    description: 'Select or paste content. Data never leaves your device unencrypted.',
   },
   {
     step: 2,
     icon: Hash,
-    title: 'Hash + Anchor',
-    description: 'Generate a cryptographic hash. Loggie prepares the on-chain anchor.',
+    title: 'Hash Generated',
+    description: 'Deterministic SHA-256 hash generated. Loggie prepares the on-chain anchor.',
   },
   {
     step: 3,
     icon: LinkIcon,
-    title: 'Blockchain Tx',
-    description: 'Anchor the hash on-chain. One signature, permanent proof.',
+    title: 'Anchor On-chain',
+    description: 'Hash anchored via wallet or signing key. One signature, permanent proof.',
   },
   {
     step: 4,
     icon: ShieldCheck,
-    title: 'Verifiable Proof',
-    description: 'Verify content forever. Anyone can confirm authenticity.',
+    title: 'Proof Returned',
+    description: 'CID and transaction reference returned. Verification is immediate.',
   },
 ];
 
@@ -95,6 +95,9 @@ export function HowItWorksSection() {
               </div>
             </div>
           </div>
+          <p className="text-center text-gray-500 text-sm mt-6">
+            The resulting proof can be independently verified without trusting Loggie or the originating system.
+          </p>
         </div>
       </div>
 
