@@ -32,7 +32,7 @@ export function Navbar() {
             <img
               src="/loggie-nav-logo-phase-1.png"
               alt="Loggie"
-              className="h-9 w-auto"
+              className="h-7 sm:h-8 md:h-10 w-auto"
             />
           </a>
 
