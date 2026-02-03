@@ -16,13 +16,13 @@ const problems = [
   {
     icon: ShieldOff,
     title: 'Trust is fragile',
-    description: 'Centralized systems can be hacked, altered, or shut down. Your proof disappears with them.',
+    description: 'Centralized systems can be hacked, altered, or shut down. When that happens, trust — and proof — often disappears with them.',
     color: 'text-orange-400',
   },
   {
     icon: Scale,
     title: 'Compliance pressure is rising',
-    description: 'Courts, regulators, and auditors increasingly require cryptographic proof — not screenshots, not databases, not claims.',
+    description: 'Courts, regulators, and auditors increasingly expect cryptographic proof — not screenshots, databases, or unsupported claims.',
     color: 'text-purple-400',
   },
 ];
@@ -65,7 +65,7 @@ export function ProblemsSection() {
         <div className="mt-16 text-center">
           <div className="inline-block w-px h-12 bg-gradient-to-b from-transparent via-gray-600 to-transparent mb-6" />
           <p className="text-gray-500 text-lg">
-            Loggie replaces trust assumptions with cryptographic proof.
+            When trust breaks, proof is what remains.
           </p>
         </div>
       </div>
