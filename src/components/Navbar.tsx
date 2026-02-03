@@ -44,7 +44,7 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img
-              src="/loggie-nav-logo-phase-1.png"
+              src="/loggie-nav-logo-phase-2.png"
               alt="Loggie Home"
               className="h-7 sm:h-8 md:h-10 w-auto"
             />
