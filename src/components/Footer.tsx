@@ -55,13 +55,13 @@ export function Footer() {
             </p>
             <p className="text-gray-500 text-xs mb-2">
               Powered by{' '}
-              <Link to="/omni" className="text-loggie-purple hover:text-loggie-cyan transition-colors">
-                Omni post-quantum security
+              <Link to="https://omnituum.com/" className="text-loggie-purple hover:text-loggie-cyan transition-colors">
+                Omnituum post-quantum security
               </Link>
               .
             </p>
             <p className="text-gray-600 text-xs">
-              Omni provides cryptographic software components only. No custody. No data hosting.
+              Omnituum provides cryptographic software components only. No custody. No data hosting.
             </p>
           </div>
 

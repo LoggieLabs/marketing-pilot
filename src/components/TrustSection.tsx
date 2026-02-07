@@ -79,7 +79,7 @@ export function TrustSection() {
                 rel="noopener noreferrer"
                 className="text-loggie-cyan hover:text-loggie-purple transition-colors text-sm inline-flex items-center gap-1"
               >
-                Learn about Omni security
+                Learn about Omnituum post-quantum security
                 <span>→</span>
               </a>
             </div>
