@@ -178,7 +178,7 @@ export function RequestAccessModal({ isOpen, onClose }: RequestAccessModalProps)
 
             {/* Form column */}
             <div className="card-material rounded-xl p-5 sm:p-6">
-              <RequestPilotAccessForm compact onSuccess={onClose} />
+              <RequestPilotAccessForm compact kind="request_access" onSuccess={onClose} />
             </div>
           </div>
         </div>

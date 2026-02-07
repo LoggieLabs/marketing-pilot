@@ -70,7 +70,7 @@ export function TrustSection() {
             <div className="text-center md:text-left">
               <h3 className="text-white font-semibold text-lg mb-2">Future-Proof Security</h3>
               <p className="text-gray-400 text-sm mb-3">
-                Loggie uses Omni&apos;s hybrid post-quantum cryptography to protect messages,
+                Loggie uses Omnituum&apos;s hybrid post-quantum cryptography to protect messages,
                 identities, and files — built to remain secure as computing power evolves.
               </p>
               <a
