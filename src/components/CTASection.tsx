@@ -74,7 +74,7 @@ export function CTASection() {
             rel="noopener noreferrer"
             className="text-gray-400 hover:text-loggie-purple transition-colors"
           >
-            Omni&apos;s production-grade cryptographic substrate
+            Omnituum&apos;s production-grade cryptographic substrate
           </a>
           , currently deployed through controlled enterprise pilots.
         </p>
