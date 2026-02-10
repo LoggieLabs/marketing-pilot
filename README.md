@@ -93,9 +93,203 @@ src/
 - Lucide React (icons)
 - No wallet/blockchain dependencies (intentionally lightweight)
 
+## Encrypted Intake System
+
+This subsystem handles pilot evaluation requests with end-to-end encryption. The server never sees plaintext PII.
+
+### Does This Use IPFS?
+
+**No.**
+
+IPFS is explicitly not used in this intake flow. Rationale:
+
+1. **Privacy boundary** — IPFS content-addressing exposes ciphertext hashes to the public DHT. Even without decryption, metadata (submission timing, volume, hash patterns) leaks to any DHT participant.
+
+2. **Complexity** — Adding IPFS to the synchronous intake path introduces pinning dependencies, gateway latency, and failure modes that don't improve the security model.
+
+3. **Not needed** — D1 provides durable, queryable ciphertext storage with Cloudflare's infrastructure guarantees. The intake boundary is already cryptographically sealed.
+
+Current architecture path:
+
+```
+Browser → POST /api/intake → D1 (ciphertext only)
+```
+
+IPFS may be considered later as an async archival layer (see "Future Extensions" below), but it is **not in the intake path today**.
+
+---
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                           BROWSER                                   │
+│  ┌─────────────┐    ┌──────────────────┐    ┌───────────────────┐  │
+│  │ Form Input  │───▶│ Hybrid Encrypt   │───▶│ POST /api/intake  │  │
+│  │ (plaintext) │    │ X25519 + Kyber   │    │ (ciphertext only) │  │
+│  └─────────────┘    └──────────────────┘    └─────────┬─────────┘  │
+│                              │                        │            │
+│                              ▼                        │            │
+│                     Deterministic ID                  │            │
+│                     (BLAKE3 of ciphertext)            │            │
+└──────────────────────────────────────────────────────│────────────┘
+                                                        │
+                    ════════════════════════════════════╪════════════
+                              CLOUDFLARE                │
+                                                        ▼
+                                              ┌─────────────────┐
+                                              │ Pages Function  │
+                                              │ /api/intake.ts  │
+                                              │ (validate only) │
+                                              └────────┬────────┘
+                                                       │
+                                                       ▼
+                                              ┌─────────────────┐
+                                              │       D1        │
+                                              │ intake_requests │
+                                              │ (ciphertext)    │
+                                              └─────────────────┘
+
+                    ════════════════════════════════════════════════
+                              OPERATOR (offline)
+                                        │
+                    ┌───────────────────┼───────────────────┐
+                    │                   ▼                   │
+                    │  ┌─────────────────────────────────┐  │
+                    │  │ secrets/org.identity.json      │  │
+                    │  │ (X25519 + Kyber private keys)  │  │
+                    │  └───────────────┬─────────────────┘  │
+                    │                  │                    │
+                    │                  ▼                    │
+                    │  ┌─────────────────────────────────┐  │
+                    │  │ decrypt-intake.mjs             │  │
+                    │  │ → plaintext                    │  │
+                    │  └─────────────────────────────────┘  │
+                    └───────────────────────────────────────┘
+```
+
+---
+
+### Invariants (Non-Negotiable)
+
+These invariants define the security boundary. Violating any of them breaks the trust model.
+
+| Invariant | Description |
+|-----------|-------------|
+| **Ciphertext-only storage** | D1 stores only `encrypted_json`. No plaintext column exists. |
+| **No server-side decryption** | The Worker validates envelope shape but never decrypts content. |
+| **Client-computed intake ID** | The deterministic ID (BLAKE3 hash of ciphertext) is computed in-browser. Server does not recompute or trust its own hash. |
+| **Org private keys are operator-only** | `secrets/org.identity.json` is never committed, never deployed, never accessible to Cloudflare. |
+| **CORS via allowlist** | `ALLOWED_ORIGINS` env var controls which origins can POST. Response includes `Vary: Origin`. |
+
+---
+
+### Operator Workflow
+
+#### Step 1 — Generate org identity (one-time, offline)
+
+Creates the org's hybrid keypair. Private keys stay in `./secrets/`. Only public keys go to Cloudflare.
+
+```bash
+node scripts/decrypt-intake.mjs --gen-org-identity ./secrets/org.identity.json
+```
+
+Copy the printed values to Cloudflare Pages environment variables:
+
+```
+VITE_OMNITUUM_X25519_PUB_HEX=<printed-value>
+VITE_OMNITUUM_KYBER_PUB_B64=<printed-value>
+```
+
+**Never commit `org.identity.json`.**
+
+#### Step 2 — Local development
+
+```bash
+pnpm build
+pnpm dev:pages
+```
+
+Submit the intake form at `http://localhost:8788`.
+
+#### Step 3 — Export and decrypt
+
+```bash
+# Export latest ciphertext from local D1
+node scripts/decrypt-intake.mjs --dump-latest --db-local --out ./tmp/encrypted.json
+
+# Decrypt offline
+node scripts/decrypt-intake.mjs ./secrets/org.identity.json ./tmp/encrypted.json
+```
+
+#### Step 4 — Print public keys (for rotation/verification)
+
+```bash
+node scripts/decrypt-intake.mjs --print-pub ./secrets/org.identity.json
+```
+
+---
+
+### Environment Variables
+
+All env vars are set in **Cloudflare Pages → Settings → Environment variables**.
+
+**Build-time (client, public):**
+
+| Variable | Description |
+|----------|-------------|
+| `VITE_OMNITUUM_X25519_PUB_HEX` | Org X25519 public key (hex) |
+| `VITE_OMNITUUM_KYBER_PUB_B64` | Org Kyber768 public key (base64) |
+
+**Runtime (server, optional):**
+
+| Variable | Description |
+|----------|-------------|
+| `INTAKE_IP_SALT` | Salt for IP address hashing (privacy) |
+| `ALLOWED_ORIGINS` | Comma-separated CORS allowlist |
+
+**Local development** uses `.env` (client) and `.dev.vars` (server). See `.env.example` and `.dev.vars.example`.
+
+---
+
+### What This System Is NOT
+
+- Not a Loggie inbox
+- Not a registry identity
+- Not CLI-managed
+- Not on-chain
+- Not IPFS-backed
+
+This is a **standalone encrypted intake boundary** for pilot evaluation requests only.
+
+---
+
+### Future Extensions (Out of Scope Today)
+
+The following may be added later but are **explicitly not implemented**:
+
+#### IPFS Anchoring (optional, async)
+
+If IPFS is added, it would be as an **asynchronous archival layer**:
+
+- Ciphertext CID or hash anchored to IPFS after D1 write (not in request path)
+- Must not block intake submission
+- Must not expose metadata to DHT during synchronous flow
+- Must preserve all invariants above
+
+**This is not in scope for the current implementation.**
+
+#### Other Potential Extensions
+
+- Admin UI for viewing/exporting submissions
+- Inbox posting (forward decrypted content to Loggie inbox)
+- Webhook notifications
+
+All extensions must preserve the ciphertext-only intake boundary.
+
 ## Notes
 
 - The `#request-access` hash triggers the pilot modal
-- Form submissions generate mailto: links (no backend required)
+- Form submissions are encrypted client-side before POST
 - All Omni references link externally to omnituum.com
 - No `/app` routes — this is marketing only
