@@ -1,0 +1,10 @@
+name = "marketing-pilot"
+compatibility_date = "2024-01-01"
+
+# Pages will serve static assets from dist/ and functions from functions/
+# No explicit [site] needed for Pages projects
+
+[[d1_databases]]
+binding = "DB"
+database_name = "marketing-pilot-intake"
+database_id = "local"  # Replace with actual ID after: wrangler d1 create marketing-pilot-intake

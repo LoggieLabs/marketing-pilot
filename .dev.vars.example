@@ -1,0 +1,8 @@
+# Local development variables for wrangler pages dev
+# Copy to .dev.vars and fill in values
+
+# Optional: salt for hashing IP addresses (any random string)
+INTAKE_IP_SALT=
+
+# Optional: comma-separated allowed origins for CORS (blank = allow all in dev)
+ALLOWED_ORIGINS=http://localhost:5173

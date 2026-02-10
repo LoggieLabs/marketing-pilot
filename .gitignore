@@ -4,3 +4,14 @@ dist/
 *.local
 *.log
 tsconfig.tsbuildinfo
+
+# Secrets (never commit)
+.env
+.dev.vars
+secrets/
+
+# Cloudflare local dev
+.wrangler/
+
+# Temporary files
+tmp/
