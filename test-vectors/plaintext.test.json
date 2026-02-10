@@ -1,0 +1,9 @@
+{
+  "kind": "request_access",
+  "email": "test@example.com",
+  "company": "Test Corp",
+  "system": "Test System",
+  "useCase": "data-integrity",
+  "timeline": "0-30",
+  "compliance": ["hipaa"]
+}
