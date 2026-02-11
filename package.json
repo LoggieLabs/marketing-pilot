@@ -15,7 +15,8 @@
     "intake:dump-latest": "node scripts/decrypt-intake.mjs --dump-latest --db-local --out ./tmp/encrypted.json",
     "intake:decrypt": "node scripts/decrypt-intake.mjs ./secrets/org.identity.json ./tmp/encrypted.json",
     "intake:print-pub": "node scripts/decrypt-intake.mjs --print-pub ./secrets/org.identity.json",
-    "test:e2e:intake": "node scripts/test-e2e-intake.mjs"
+    "test:e2e:intake": "node scripts/test-e2e-intake.mjs",
+    "test:unit:normalization": "tsx scripts/test-normalization.mjs"
   },
   "dependencies": {
     "@omnituum/pqc-shared": "0.3.0",
