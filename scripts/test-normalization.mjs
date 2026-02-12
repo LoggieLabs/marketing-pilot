@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 /**
- * Unit tests for intake normalization
+ * Unit tests for intake normalization (app-level integration test)
  *
- * Verifies:
- * - Newline canonicalization produces identical IDs across platforms
- * - normalizeMultiline helper works correctly
+ * This test validates the integration with @omnituum/secure-intake-client.
+ * For core normalization tests, see packages/secure-intake-client/test/normalization.test.ts
  *
  * Usage: node scripts/test-normalization.mjs
  */
 
-import { normalizeMultiline, _test } from "../src/lib/requestAccess.ts";
-
-const { normalizeFormData, generateRequestId } = _test;
+import { normalizeMultiline, generateRequestId } from "@omnituum/secure-intake-client";
+import { canonicalizePilotAccessPayload } from "@omnituum/secure-intake-client/presets/pilot-access";
 
 function fail(msg) {
   console.error(`✘ ${msg}`);
@@ -75,10 +73,10 @@ const mixedFormData = {
 
 const kind = "request_pilot_access";
 
-const unixNormalized = normalizeFormData(baseFormData, kind);
-const windowsNormalized = normalizeFormData(windowsFormData, kind);
-const oldMacNormalized = normalizeFormData(oldMacFormData, kind);
-const mixedNormalized = normalizeFormData(mixedFormData, kind);
+const unixNormalized = canonicalizePilotAccessPayload(baseFormData, kind);
+const windowsNormalized = canonicalizePilotAccessPayload(windowsFormData, kind);
+const oldMacNormalized = canonicalizePilotAccessPayload(oldMacFormData, kind);
+const mixedNormalized = canonicalizePilotAccessPayload(mixedFormData, kind);
 
 const unixId = generateRequestId(unixNormalized);
 const windowsId = generateRequestId(windowsNormalized);
@@ -104,8 +102,8 @@ pass("Mixed line endings → same ID as Unix LF");
 // Test: ID is deterministic (same input → same output)
 // ═══════════════════════════════════════════════════════════════════════════
 
-const id1 = generateRequestId(normalizeFormData(baseFormData, kind));
-const id2 = generateRequestId(normalizeFormData(baseFormData, kind));
+const id1 = generateRequestId(canonicalizePilotAccessPayload(baseFormData, kind));
+const id2 = generateRequestId(canonicalizePilotAccessPayload(baseFormData, kind));
 
 if (id1 !== id2) {
   fail(`ID not deterministic: ${id1} !== ${id2}`);
