@@ -11,6 +11,9 @@ importers:
       '@omnituum/pqc-shared':
         specifier: 0.3.0
         version: 0.3.0
+      '@omnituum/secure-intake-client':
+        specifier: git+https://github.com/Omnituum/secure-intake-client.git#v0.1.1
+        version: https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/d2483c5084c8d9038e154add5b2e059a3adeb6c4(typescript@5.9.3)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -652,6 +655,16 @@ packages:
 
   '@omnituum/pqc-shared@0.3.0':
     resolution: {integrity: sha512-XU7dGzXEmWeT/PplX0t6DU7o2drAF1V/ltdVxi0jhMahiXkOQYASJBmGsIamolODVDuqTEiXDvyRXZ0tlx8kbg==}
+
+  '@omnituum/secure-intake-client@https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/d2483c5084c8d9038e154add5b2e059a3adeb6c4':
+    resolution: {tarball: https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/d2483c5084c8d9038e154add5b2e059a3adeb6c4}
+    version: 0.1.0
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      typescript: '>=5.0.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   '@rolldown/pluginutils@1.0.0-rc.2':
     resolution: {integrity: sha512-izyXV/v+cHiRfozX62W9htOAvwMo4/bXKDrQ+vom1L1qRuexPock/7VZDAhnpHCLNejd3NJ6hiab+tO0D44Rgw==}
@@ -1928,6 +1941,12 @@ snapshots:
       hash-wasm: 4.12.0
       kyber-crystals: 1.0.7
       tweetnacl: 1.0.3
+
+  '@omnituum/secure-intake-client@https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/d2483c5084c8d9038e154add5b2e059a3adeb6c4(typescript@5.9.3)':
+    dependencies:
+      '@omnituum/pqc-shared': 0.3.0
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@rolldown/pluginutils@1.0.0-rc.2': {}
 
