@@ -19,7 +19,7 @@
     "test:unit:normalization": "tsx scripts/test-normalization.mjs"
   },
   "dependencies": {
-    "@omnituum/pqc-shared": "0.3.0",
+    "@omnituum/pqc-shared": "^0.4.0",
     "@omnituum/secure-intake-client": "git+https://github.com/Omnituum/secure-intake-client.git#v0.1.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.462.0",
