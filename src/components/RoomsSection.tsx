@@ -5,7 +5,9 @@ import { SectionHeading, Evidence } from './shared/Proof';
 /* ═══════════════════════════════════════════════════════════════════════
    §4 — SEVEN ORDINARY ROOMS
 
-   The flagship product tour, and it now runs immediately after the hero.
+   The flagship product tour. Its lede is load-bearing: it names the single
+   job all seven screens serve, so they stop reading as an unrelated feature
+   list and start reading as one product with one purpose.
    It used to sit behind three sections of architecture, which meant a visitor
    had to work through why the thing exists before learning what it does.
 
@@ -68,13 +70,25 @@ const FILE_STATES = ['Saved', 'Private', 'Backed up', 'Published', 'Needs attent
 export function RoomsSection() {
   return (
     <SectionWrapper id="six-rooms">
-      <SectionHeading eyebrow="WHAT YOU GET">One identity. Seven places it becomes useful.</SectionHeading>
+      <SectionHeading
+        eyebrow="WHAT YOU GET"
+        lede={<>Seven screens, one record underneath them.</>}
+      >
+        Every part of it is doing the same job.
+      </SectionHeading>
 
       <div className="mt-8 max-w-2xl space-y-5">
+        {/* The unifying sentence. Without it these read as seven unrelated
+            features; with it they read as one product. */}
         <p className="text-lg text-gray-300 leading-relaxed">
-          Seven screens, one key behind all of them. Everything technical — inbox admin, the
-          indexer, the seal and decrypt tools — is collapsed under Advanced, where a normal person
-          never has to look at it.
+          Files are the evidence. The journal is what you wrote down at the time. Proof gives a
+          piece of it a date anyone can check. Your identity says who made it, recovery keeps it
+          alive, contacts and messages are how it reaches someone else.
+        </p>
+        <p className="text-lg text-gray-300 leading-relaxed">
+          One key sits behind all of them. Everything technical — inbox admin, the indexer, the seal
+          and decrypt tools — is collapsed under Advanced, where a normal person never has to look
+          at it.
         </p>
         <p className="text-lg text-gray-300 leading-relaxed">
           Following someone, adding them as a contact, and letting them message you are three

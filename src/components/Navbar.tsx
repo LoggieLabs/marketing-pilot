@@ -5,9 +5,9 @@ import { Menu, X } from 'lucide-react';
 const APP_URL = 'https://app.loggielabs.com';
 
 const navLinks = [
+  { label: 'When it matters', hash: 'when-it-matters' },
   { label: 'What you get', hash: 'six-rooms' },
   { label: 'Proof', hash: 'prove-it' },
-  { label: 'The protocol', hash: 'engine-room' },
   { label: "What it can't do", hash: 'cant-do-yet' },
 ];
 
@@ -67,9 +67,6 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <Link to="/status" className="text-sm text-gray-400 hover:text-white transition-colors">
-              Status
-            </Link>
           </div>
 
           <div className="hidden md:flex items-center gap-4">
@@ -106,9 +103,6 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <Link to="/status" className="block py-2.5 text-gray-300 hover:text-white transition-colors">
-              Status
-            </Link>
             <a
               href={APP_URL}
               className="block w-full text-center px-6 py-3 bg-loggie-purple hover:bg-loggie-purple/90

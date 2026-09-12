@@ -72,6 +72,28 @@ const BANNED = [
   // "trustless-gateway.link" is a real public IPFS gateway hostname, not a claim.
   [/\btrustless\b(?!-gateway)/i, 'overclaim — two operated services remain', []],
 
+  // ── Evidence and legal claims ─────────────────────────────────────────
+  // The site now leads with evidence use cases — insurance, disputes, client
+  // work — which is the easiest place on it to overclaim. A Loggie proof shows
+  // that content with a given fingerprint was anchored by a given signer at a
+  // given block. It is not a legal instrument and it settles nothing on its
+  // own; the product's own exported certificate carries that advisory note.
+  [/\b(legally )?admissible\b/i, 'a Loggie proof is not a statement about admissibility', [/\bnot\b|\bno\b/i]],
+  [/\blegally binding\b/i, 'Loggie makes no legal claim', [/\bnot\b|\bno\b/i]],
+  [/\b(holds? up|stand(s)? up) in court\b/i, 'no claim about litigation outcomes', []],
+  [/\bwin (your |the )?(case|claim|dispute|lawsuit)\b/i, 'no claim about outcomes', []],
+  [/\b(court|legal|judicial)[- ]?(approved|recognised|recognized|grade)\b/i, 'unsupported legal status claim', []],
+  [/\bproves? (that )?(you|your|the) (are|were|own|owned)\b/i,
+    'a proof shows what existed when — not who is right', []],
+
+  // ── Unmeasured economics ──────────────────────────────────────────────
+  // "What it's worth" describes mechanisms deliberately. No study has been run,
+  // so a figure here would be the first unfalsifiable claim on the page.
+  [/\bsaves? (you )?\$?\d/i, 'no savings figure has been measured', []],
+  [/\b\d+\s*%\s*(less|fewer|faster|cheaper|reduction|savings)\b/i, 'no measured percentage exists', []],
+  [/\b(cuts?|reduces?) (costs?|time|hours) by\b/i, 'no measured reduction exists', []],
+  [/\b(roi|return on investment)\b/i, 'no ROI has been calculated', []],
+
   // ── Source availability ──
   // Caught by review, not by this file: the site said "free and open source"
   // three sections after saying the app and SDK sources are not published. MIT

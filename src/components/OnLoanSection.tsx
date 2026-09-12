@@ -4,7 +4,13 @@ import { BlueprintLattice } from './shared/BlueprintLattice';
 import { CONTRACT_MAP } from '../data/status';
 
 /* ═══════════════════════════════════════════════════════════════════════
-   WHY THIS IS DIFFERENT
+   WHY IT WORKS THIS WAY
+
+   This section owns the line the site used to open with. As a hero it stated a
+   philosophy before the reader had felt any pain, so they had to reverse-
+   engineer the benefit out of the architecture. Arriving here — after the job
+   and the situations — it lands, because by now the reader knows why the
+   ownership question is the one underneath everything else.
 
    Names the failure modes first, then defines what "yours" actually means —
    operationally, as five checkable properties, not philosophically. That
@@ -60,8 +66,11 @@ export function OnLoanSection() {
       <BlueprintLattice />
 
       <div className="relative z-10">
-        <SectionHeading eyebrow="WHY THIS IS DIFFERENT">
-          Your digital life shouldn't depend on somebody else's account database.
+        <SectionHeading
+          eyebrow="WHY IT WORKS THIS WAY"
+          lede={<>Your digital life shouldn't depend on somebody else's account database.</>}
+        >
+          Everything you keep online is on loan. Loggie hands you the deed.
         </SectionHeading>
 
         <div className="mt-12 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">

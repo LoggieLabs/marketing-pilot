@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 
 import { HeroSection } from './components/HeroSection';
+import { WhenItMattersSection } from './components/WhenItMattersSection';
 import { OnLoanSection } from './components/OnLoanSection';
 import { NoAccountSection } from './components/NoAccountSection';
 import { RoomsSection } from './components/RoomsSection';
@@ -14,16 +15,21 @@ import { NoAlgorithmSection } from './components/NoAlgorithmSection';
 import { EngineRoomSection } from './components/EngineRoomSection';
 import { OwnBugsSection } from './components/OwnBugsSection';
 import { CantDoYetSection } from './components/CantDoYetSection';
-import { IfYouveEverSection } from './components/IfYouveEverSection';
+import { WhatItSavesSection } from './components/WhatItSavesSection';
 import { WhatItTakesSection } from './components/WhatItTakesSection';
 import { StayInTouchSection } from './components/StayInTouchSection';
 
 /*
- * The page is built in three acts, and the split is deliberate:
+ * The page is built in four acts, and the split is deliberate:
  *
- *   ~25%  MARKETING      what you get, why it's different, how it starts
- *   ~25%  DEMONSTRATION  three proofs a reader could actually go and run
- *   ~50%  OPT-IN         what's unfinished, our own bugs, the protocol itself
+ *   WANT     the job, the situations it covers, the product, why it works so
+ *   BELIEVE  three proofs a reader could actually go and run
+ *   DECIDE   what it is worth, what is unfinished, our own bugs, the protocol
+ *
+ * The order changed after review found the site answered "can I believe
+ * Loggie?" long before it answered "why would I want Loggie?" — leaving a
+ * visitor to reverse-engineer the benefit out of the architecture. The
+ * transparency is all still here; it is just no longer the opening argument.
  *
  * It used to run architecture-first, which meant a visitor had to work through
  * why the thing exists before learning what it does. The product tour now runs
@@ -61,24 +67,30 @@ import { StayInTouchSection } from './components/StayInTouchSection';
     <div className="min-h-screen bg-loggie-void text-white overflow-x-hidden">
       <Navbar />
       <main>
-        {/* Act one — what you get, why it differs, how it starts. */}
+        {/* Act one — the job, then the situations, then the product.
+            A reader has to recognise their own problem before any amount of
+            cryptography is interesting, so nothing structural runs before this. */}
         <HeroSection />
+        <WhenItMattersSection />
         <RoomsSection />
         <NoAlgorithmSection />
+
+        {/* Act two — why it works that way, and how you start. */}
         <OnLoanSection />
         <NoAccountSection />
 
-        {/* Act two — three things a reader could go and check themselves. */}
+        {/* Act three — three things a reader could go and check themselves. */}
         <ProveItSection />
         <GetItBackSection />
         <SealedSection />
 
-        {/* Act three — opt-in: what is unfinished, then the machinery. */}
+        {/* Act four — what it is worth, then what is unfinished, then the
+            machinery. Due diligence is earned, not front-loaded. */}
+        <WhatItSavesSection />
         <CantDoYetSection />
         <OwnBugsSection />
         <EngineRoomSection />
 
-        <IfYouveEverSection />
         <WhatItTakesSection />
         <StayInTouchSection />
       </main>
