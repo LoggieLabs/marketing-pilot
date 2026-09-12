@@ -4,6 +4,15 @@ import { StatusStrip } from './shared/Proof';
 
 const APP_URL = 'https://app.loggielabs.com';
 
+/*
+ * The hero has one job and thirty seconds to do it: land three ideas.
+ *   I control it.  I can recover it.  Other people can verify it.
+ *
+ * Everything else the page knows waits its turn. The fee and the
+ * no-subscription line used to sit here and were moved to the getting-started
+ * section, where there is room to answer the question they provoke — "no
+ * markup, so who gets the 0.01?" — instead of just raising it.
+ */
 export function HeroSection() {
   return (
     <section id="hero" className="relative min-h-screen flex items-center overflow-clip">
@@ -32,11 +41,14 @@ export function HeroSection() {
             <span className="text-white">Loggie hands you the deed.</span>
           </h1>
 
-          <p className="mt-8 text-lg sm:text-xl text-gray-400 leading-relaxed max-w-2xl">
-            One wallet signature builds a private identity nobody else holds — then opens it as
-            files, a journal, messages, your people and a public feed. Everything private is
-            encrypted on your own machine before it leaves it. There is no account to close and no
-            password to reset, because there is no account.
+          <p className="mt-8 text-lg sm:text-xl text-gray-300 leading-relaxed max-w-2xl">
+            One wallet signature creates a private identity only you control — then opens it as
+            files, a journal, messages, contacts and a public feed.
+          </p>
+
+          <p className="mt-4 text-lg text-gray-400 leading-relaxed max-w-2xl">
+            Your private content is encrypted on your device before it leaves it. There is no Loggie
+            account to suspend and no password for us to reset.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -54,8 +66,8 @@ export function HeroSection() {
               Loggie profile, readable with no wallet and no signature. No inbox
               has been designated for it yet, and fabricating an address here
               would break the rule the whole site is built on. Until an owner
-              names one, this scrolls to the product tour instead. See
-              README.md → "Open decisions".
+              names one, this scrolls to the product tour. See README →
+              "Open decisions".
             */}
             <a
               href="#six-rooms"
@@ -63,19 +75,13 @@ export function HeroSection() {
                          border border-gray-700 hover:border-gray-600 rounded-lg
                          transition-colors text-base inline-flex items-center justify-center"
             >
-              See what's inside first
+              See how it works
             </a>
           </div>
 
           {/* The four things that would make the rest of this page a lie if they
               were not said out loud. Never move this to the footer. */}
-          <StatusStrip className="mt-10" />
-
-          <p className="mt-5 text-sm text-gray-400 leading-relaxed max-w-2xl">
-            Loggie charges you nothing and takes no markup. The only money that moves is the
-            network's own fee and the protocol fee on actions you choose to put on-chain on
-            Sepolia — and today those are paid in free test ETH.
-          </p>
+          <StatusStrip short className="mt-10" />
         </div>
       </div>
     </section>

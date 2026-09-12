@@ -1,5 +1,5 @@
 import { useCallback, useState, type ReactNode } from 'react';
-import { Check, Copy, ExternalLink } from 'lucide-react';
+import { Check, ChevronRight, Copy, ExternalLink } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════════════
    PROOF PRIMITIVES
@@ -121,17 +121,36 @@ export function Block({ value, className = '' }: { value: number; className?: st
 /* ── The proof rule ─────────────────────────────────────────────────── */
 
 /**
- * The site's one structural device. A block carrying this rule is making a
- * claim with a checkable artefact behind it, named in the line beneath.
+ * The site's one structural device, and the thing that makes the whole page
+ * work: a claim and the artefact behind it, welded together.
+ *
+ * It is COLLAPSED by default. The citations are the reason to believe the
+ * sentence above them, but a reader who has not yet decided they care should
+ * not have to walk through `setup-tasks.ts:23-29` to reach the next idea.
+ * Open it and you get file paths, test names, CIDs and block numbers — enough
+ * to go and check the claim yourself.
+ *
+ * A block carrying this is making a claim with a checkable artefact behind it.
  * A block without one is making no verifiable claim — the absence is
  * information, so never add this for visual rhythm.
  */
 export function Evidence({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`mt-6 ${className}`}>
-      <div className="proof-rule mb-3" aria-hidden="true" />
-      <p className="mono text-2xs text-gray-400 leading-relaxed max-w-2xl">{children}</p>
-    </div>
+    <details className={`group mt-6 max-w-2xl ${className}`}>
+      <summary
+        className="inline-flex cursor-pointer list-none items-center gap-2 text-2xs
+                   text-gray-400 transition-colors hover:text-loggie-cyan
+                   [&::-webkit-details-marker]:hidden"
+      >
+        <span className="proof-rule shrink-0" aria-hidden="true" />
+        <span className="mono">Evidence &amp; source references</span>
+        <ChevronRight
+          className="h-3 w-3 shrink-0 transition-transform group-open:rotate-90"
+          aria-hidden="true"
+        />
+      </summary>
+      <p className="mono mt-3 text-2xs leading-relaxed text-gray-400">{children}</p>
+    </details>
   );
 }
 
@@ -197,17 +216,38 @@ export const STATUS_FACTS = [
   'No subscription, no plan, no checkout',
 ] as const;
 
-export function StatusStrip({ className = '' }: { className?: string }) {
+/**
+ * The hero's shorter cut. The two facts it drops — the inbox fee and the
+ * absence of a subscription — are money questions, and a four-word fragment
+ * raises them without answering them ("no markup, so who gets the 0.01?").
+ * They get a full, plain answer in the getting-started section instead.
+ * Nothing here contradicts the full strip; it is a subset, never a softening.
+ */
+export const STATUS_FACTS_SHORT = [
+  'Public beta',
+  'Ethereum Sepolia test network',
+  'Desktop browser + MetaMask',
+  'Not independently audited',
+] as const;
+
+export function StatusStrip({
+  className = '',
+  short = false,
+}: {
+  className?: string;
+  /** Hero variant: the four facts that need no further explanation. */
+  short?: boolean;
+}) {
   return (
     <div
       className={`inline-flex flex-wrap items-center gap-x-2 gap-y-1.5 rounded-lg
                   border border-white/[0.07] bg-gray-900/90 px-3.5 py-2.5 backdrop-blur ${className}`}
     >
       <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0 animate-micro-pulse" aria-hidden="true" />
-      {STATUS_FACTS.map((fact, i) => (
+      {(short ? STATUS_FACTS_SHORT : STATUS_FACTS).map((fact, i, all) => (
         <span key={fact} className="mono text-2xs text-gray-400">
           {fact}
-          {i < STATUS_FACTS.length - 1 ? <span className="text-gray-700 ml-2">·</span> : null}
+          {i < all.length - 1 ? <span className="text-gray-700 ml-2">·</span> : null}
         </span>
       ))}
     </div>

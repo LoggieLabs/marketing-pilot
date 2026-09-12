@@ -46,7 +46,11 @@ export function IfYouveEverSection() {
     <SectionWrapper id="if-youve-ever">
       <SectionHeading eyebrow="WHO IT'S FOR">If you've ever needed to prove something.</SectionHeading>
 
-      <ul className="mt-12 max-w-2xl space-y-6">
+      <p className="mt-8 max-w-2xl text-xl leading-relaxed text-gray-200">
+        You want your important digital history to survive the service that created it.
+      </p>
+
+      <ul className="mt-10 max-w-2xl space-y-6">
         {SITUATIONS.map((situation) => {
           const Icon = situation.icon;
           return (

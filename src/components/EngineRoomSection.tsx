@@ -22,12 +22,12 @@ import { CONTRACT_MAP } from '../data/status';
 export function EngineRoomSection() {
   return (
     <SectionWrapper id="engine-room">
-      <SectionHeading eyebrow="THE ENGINE ROOM">The app is the front door. Here's the building.</SectionHeading>
+      <SectionHeading eyebrow="INSPECT THE PROTOCOL">Nothing important is hidden behind the app.</SectionHeading>
 
       <div className="mt-10 max-w-3xl space-y-5">
         <p className="text-lg text-gray-300 leading-relaxed">
-          You do not need to read this to use Loggie. It is here because everything above is only
-          worth something if you can check it.
+          You don't need to understand this section to use Loggie. It's here because everything
+          above should be independently inspectable.
         </p>
         <p className="text-lg text-gray-300 leading-relaxed">
           Here is the part most products keep in a whitepaper. Every noun you have just read has an
@@ -65,11 +65,12 @@ export function EngineRoomSection() {
           them.
         </p>
         <p className="text-base text-gray-300 leading-relaxed">
-          What we will not say: not decentralised, not audited, not on mainnet. Loggie Labs runs the
-          default storage gateway and the feed index. Both are replaceable, and the index is never
-          the source of truth — your browser re-derives the feed from the chain itself and silently
-          falls back to a full scan when the index is missing — but they are real services we
-          operate, and pretending otherwise would be the first lie on this page.
+          Three things we won't pretend: Loggie is not fully decentralised, not independently
+          audited, and not on mainnet. Loggie Labs runs the default storage gateway and the feed
+          index. Both are replaceable, and the index is never the source of truth — your browser
+          re-derives the feed from the chain itself and silently falls back to a full scan when the
+          index is missing — but they are real services we operate, and pretending otherwise would
+          be the first lie on this page.
         </p>
       </div>
 

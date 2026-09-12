@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { SectionWrapper } from './shared/SectionWrapper';
 import { SectionHeading, Evidence } from './shared/Proof';
-import { FINDINGS, FINDINGS_SUMMARY } from '../data/status';
+import { FINDINGS_SUMMARY } from '../data/status';
 
 /* ═══════════════════════════════════════════════════════════════════════
    §10 — WE PUBLISH OUR OWN BUGS
@@ -22,16 +23,6 @@ import { FINDINGS, FINDINGS_SUMMARY } from '../data/status';
    localhost:3333 — the static copy at /status is the public surface.
    ═══════════════════════════════════════════════════════════════════════ */
 
-/** Six real rows, then the honest remainder. */
-const SHOWN = FINDINGS.slice(0, 6);
-const REMAINING = FINDINGS.length - SHOWN.length;
-
-const severityColour: Record<string, string> = {
-  HIGH: 'text-red-400',
-  MEDIUM: 'text-amber-300',
-  INFO: 'text-gray-400',
-};
-
 export function OwnBugsSection() {
   return (
     <SectionWrapper id="own-bugs">
@@ -43,65 +34,35 @@ export function OwnBugsSection() {
           say something it cannot show. Here is what that looks like in practice.
         </p>
         <p className="text-base text-gray-300 leading-relaxed">
-          We keep a generated register of our own contract defects — {FINDINGS_SUMMARY.total}{' '}
-          findings, {FINDINGS_SUMMARY.high} of them high severity — and for each one we state
-          whether it is fixed in the source or still present in the deployed contract.{' '}
-          {FINDINGS_SUMMARY.stillOnChain} are still live on Sepolia. That sentence is on our website,
-          not only in our repository, and it is a large part of why there is no real money in those
-          contracts.
+          We keep a generated register of our own contract defects, and for each one we state
+          whether it is fixed in the source or still present in the deployed contract. It is on our
+          website, not only in our repository.
         </p>
       </div>
 
-      {/* The table. Hairline rules, no surface, no hover. */}
-      <div className="mt-10 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-        <table className="w-full text-left border-collapse min-w-[40rem] max-w-4xl">
-          <caption className="sr-only">
-            Six of eleven recorded contract findings, their severity, whether they are fixed in
-            source, and whether they are still present in the deployed Sepolia bytecode
-          </caption>
-          <thead>
-            <tr className="border-b border-white/[0.12]">
-              <th scope="col" className="py-3 pr-6 mono text-2xs font-normal text-gray-400">
-                finding
-              </th>
-              <th scope="col" className="py-3 pr-6 mono text-2xs font-normal text-gray-400">
-                severity
-              </th>
-              <th scope="col" className="py-3 pr-6 mono text-2xs font-normal text-gray-400">
-                fixed in source
-              </th>
-              <th scope="col" className="py-3 mono text-2xs font-normal text-gray-400">
-                still on Sepolia
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/[0.06]">
-            {SHOWN.map((f) => (
-              <tr key={f.id}>
-                <td className="py-3.5 pr-6 align-top text-sm text-gray-200">{f.title}</td>
-                <td className={`py-3.5 pr-6 align-top mono text-2xs ${severityColour[f.severity]}`}>
-                  {f.severity}
-                </td>
-                <td className="py-3.5 pr-6 align-top text-2xs text-gray-400">{f.status}</td>
-                <td
-                  className={`py-3.5 align-top text-2xs ${
-                    f.onChain === 'fixed' ? 'text-green-400' : 'text-amber-300'
-                  }`}
-                >
-                  {f.onChain === 'fixed' ? 'no — fixed' : 'yes'}
-                </td>
-              </tr>
-            ))}
-            <tr>
-              <td colSpan={4} className="py-3.5 text-2xs text-gray-400">
-                …and {REMAINING} more —{' '}
-                <Link to="/status" className="text-gray-400 hover:text-white transition-colors">
-                  the whole register is at /status
-                </Link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      {/* The full eleven-row register lives at /status. On the homepage the
+          counts do the work: the table was a wall of solidity-specific rows a
+          visitor could not act on, and burying the reader in it weakened the
+          one sentence that actually lands. */}
+      <div className="mt-10 max-w-2xl border-y border-white/[0.06] py-8">
+        <p className="text-lg text-gray-200 leading-relaxed">
+          Loggie currently has {FINDINGS_SUMMARY.total} recorded contract findings.{' '}
+          {FINDINGS_SUMMARY.high} are high severity. {FINDINGS_SUMMARY.stillOnChain} remain present
+          in deployed Sepolia bytecode.
+        </p>
+        <p className="mt-4 text-base text-gray-400 leading-relaxed">
+          That is one reason Loggie is on a test network and does not handle real ETH. Every
+          finding, its remediation, and the difference between what is fixed in source and what is
+          still deployed is public.
+        </p>
+        <Link
+          to="/status"
+          className="mt-6 inline-flex items-center gap-1.5 text-sm text-loggie-cyan
+                     hover:text-loggie-cyan/80 transition-colors"
+        >
+          View live status
+          <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+        </Link>
       </div>
 
       <div className="mt-12 max-w-2xl space-y-5">

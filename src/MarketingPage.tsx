@@ -19,16 +19,24 @@ import { WhatItTakesSection } from './components/WhatItTakesSection';
 import { StayInTouchSection } from './components/StayInTouchSection';
 
 /*
- * The page moves: feeling → mechanic → product → four proofs → the building
- * underneath → what is broken → what is missing → who it's for → what it costs
- * → the ask.
+ * The page is built in three acts, and the split is deliberate:
  *
- * The two disclosure sections (own-bugs, cant-do-yet) sit immediately before
- * the conversion, not in the footer. That placement is deliberate: a reader who
- * gets through both and keeps scrolling has convinced themselves, and nothing
- * later in the page has to work as hard.
- */
-export default function MarketingPage() {
+ *   ~25%  MARKETING      what you get, why it's different, how it starts
+ *   ~25%  DEMONSTRATION  three proofs a reader could actually go and run
+ *   ~50%  OPT-IN         what's unfinished, our own bugs, the protocol itself
+ *
+ * It used to run architecture-first, which meant a visitor had to work through
+ * why the thing exists before learning what it does. The product tour now runs
+ * directly after the hero.
+ *
+ * The two disclosure sections sit immediately before the conversion, not in the
+ * footer. That placement is deliberate: a reader who gets through both and keeps
+ * scrolling has convinced themselves, and nothing later has to work as hard.
+ *
+ * Exactly three proofs, not four. "Nothing is deciding what you see" is a
+ * product principle rather than something a visitor can check, so it sits with
+ * the product tour instead of padding the run.
+ */export default function MarketingPage() {
   const location = useLocation();
 
   useEffect(() => {
@@ -53,17 +61,23 @@ export default function MarketingPage() {
     <div className="min-h-screen bg-loggie-void text-white overflow-x-hidden">
       <Navbar />
       <main>
+        {/* Act one — what you get, why it differs, how it starts. */}
         <HeroSection />
+        <RoomsSection />
+        <NoAlgorithmSection />
         <OnLoanSection />
         <NoAccountSection />
-        <RoomsSection />
+
+        {/* Act two — three things a reader could go and check themselves. */}
         <ProveItSection />
         <GetItBackSection />
         <SealedSection />
-        <NoAlgorithmSection />
-        <EngineRoomSection />
-        <OwnBugsSection />
+
+        {/* Act three — opt-in: what is unfinished, then the machinery. */}
         <CantDoYetSection />
+        <OwnBugsSection />
+        <EngineRoomSection />
+
         <IfYouveEverSection />
         <WhatItTakesSection />
         <StayInTouchSection />

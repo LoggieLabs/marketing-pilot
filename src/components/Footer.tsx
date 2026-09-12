@@ -15,9 +15,9 @@ const columns = [
     heading: 'Loggie',
     links: [
       { label: 'Open Loggie', href: APP_URL, external: true },
-      { label: 'What it is', href: '/#six-rooms' },
+      { label: 'What you get', href: '/#six-rooms' },
       { label: 'How proof works', href: '/#prove-it' },
-      { label: 'The contracts', href: '/#engine-room' },
+      { label: 'The protocol', href: '/#engine-room' },
     ],
   },
   {

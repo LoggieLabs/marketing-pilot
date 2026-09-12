@@ -54,9 +54,9 @@ export function CantDoYetSection() {
       {/* Not a limit, so not a numbered row and not in the data file — the
           turn the section ends on. */}
       <p className="mt-8 max-w-2xl text-base sm:text-lg leading-relaxed border-t border-white/[0.06] pt-8">
-        <span className="text-amber-300 font-medium">If any of that is a dealbreaker:</span>{' '}
+        <span className="text-amber-300 font-medium">If any of that is a dealbreaker,</span>{' '}
         <span className="text-gray-300">
-          It should be. We would rather you found out here than after you moved your life in.
+          it should be. We&rsquo;d rather you find out here than after you&rsquo;ve moved your life in.
         </span>
       </p>
 

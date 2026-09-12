@@ -2,7 +2,13 @@ import { SectionWrapper } from './shared/SectionWrapper';
 import { SectionHeading, Evidence } from './shared/Proof';
 
 /* ═══════════════════════════════════════════════════════════════════════
-   §8 — NOTHING IS DECIDING FOR YOU
+   NOTHING IS DECIDING FOR YOU
+
+   This was "Proof Four". It is not a proof — a visitor cannot go and check it
+   the way they can check an anchor, a recovery or a ciphertext — it is a
+   product principle, and it now reads as one, sitting with the product tour
+   rather than padding the proof run to four. Three checkable proofs land
+   harder than four claims of mixed kind.
 
    Converts an absence into the feature it actually is. The deliberate refusal
    to ship likes is the clearest single proof of the product's character, so
@@ -22,7 +28,7 @@ const ABSENT = ['ranked', 'recommended', 'trending', 'liked'] as const;
 export function NoAlgorithmSection() {
   return (
     <SectionWrapper id="no-algorithm">
-      <SectionHeading eyebrow="PROOF FOUR">Nothing here is deciding what you see.</SectionHeading>
+      <SectionHeading eyebrow="HOW THE FEED WORKS">Nothing here is deciding what you see.</SectionHeading>
 
       <div className="mt-12 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
         <div className="max-w-2xl space-y-5">

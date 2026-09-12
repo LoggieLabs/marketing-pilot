@@ -123,11 +123,16 @@ export function WhatItTakesSection() {
           </p>
 
           <p className="mt-5 text-base text-gray-300 leading-relaxed">
-            Loggie is free and open source. We charge no subscription and take no markup. The only
-            thing you pay is the network fee and the protocol fee on the actions you choose to put
-            on-chain on Sepolia: 0.01 ETH plus gas to create your inbox, and gas on posting,
-            following, allowing a sender, anchoring a file, or saving a journal entry. Today all of
-            that is free test ETH.
+            Loggie is free to use during the Sepolia beta. Its cryptography and CLI components are
+            MIT-licensed and public; the app and SDK source are not published yet.
+          </p>
+
+          <p className="mt-5 text-base text-gray-300 leading-relaxed">
+            Loggie charges no subscription and no checkout fee. Creating an inbox currently invokes
+            a 0.01 test-ETH protocol fee, which goes to the RevenueRouter contract rather than to
+            us as a markup, plus network gas. Posting, following, allowing a sender, anchoring a
+            file and saving a journal entry each cost gas. Because Sepolia ETH has no monetary
+            value, none of it represents real payment today.
           </p>
 
           <Evidence>

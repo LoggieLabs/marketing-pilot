@@ -5,9 +5,9 @@ import { Menu, X } from 'lucide-react';
 const APP_URL = 'https://app.loggielabs.com';
 
 const navLinks = [
-  { label: 'What it is', hash: 'six-rooms' },
+  { label: 'What you get', hash: 'six-rooms' },
   { label: 'Proof', hash: 'prove-it' },
-  { label: 'The contracts', hash: 'engine-room' },
+  { label: 'The protocol', hash: 'engine-room' },
   { label: "What it can't do", hash: 'cant-do-yet' },
 ];
 

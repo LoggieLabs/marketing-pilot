@@ -67,9 +67,19 @@ const BANNED = [
   // ── Availability ──
   [/npm i(nstall)? @loggiecid\//i, 'no @loggiecid package is published to npm', []],
   [/\bLoggie Black\b/, 'retired codename; the public product name is Loggie', []],
-  [/\bfully decentrali[sz]ed\b/i, 'Loggie Labs runs the gateway and the index', []],
+  [/\bfully decentrali[sz]ed\b/i, 'Loggie Labs runs the gateway and the index',
+    [/\bnot\b|\bnever\b|\bwon't pretend\b|\bwe will not say\b/i]],
   // "trustless-gateway.link" is a real public IPFS gateway hostname, not a claim.
   [/\btrustless\b(?!-gateway)/i, 'overclaim — two operated services remain', []],
+
+  // ── Source availability ──
+  // Caught by review, not by this file: the site said "free and open source"
+  // three sections after saying the app and SDK sources are not published. MIT
+  // licensing is not the same as published source, and a reader who went to
+  // check would find nothing. Say "free to use" and name which parts are public.
+  [/\bopen[- ]source\b/i, 'the app and SDK sources are not published — say which parts are public',
+    [/\bnot published\b|\bare not public\b|\bMIT-licensed and public\b|\bopen-source post-quantum\b/i]],
+  [/\bfree and open source\b/i, 'contradicts "sources are not published yet"', []],
 
   // ── Engagement features deliberately not shipped ──
   [/\bfollower counts?\b/i, 'not implemented and not designed', [/\bno\b|\bnot\b|\bnever\b/i]],

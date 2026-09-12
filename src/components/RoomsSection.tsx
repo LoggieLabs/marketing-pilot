@@ -5,9 +5,13 @@ import { SectionHeading, Evidence } from './shared/Proof';
 /* ═══════════════════════════════════════════════════════════════════════
    §4 — SEVEN ORDINARY ROOMS
 
-   The flagship product tour. The job is to make the app feel finished and
-   ordinary, and to prove "for everybody" with the five-word file vocabulary
-   rather than by asserting simplicity.
+   The flagship product tour, and it now runs immediately after the hero.
+   It used to sit behind three sections of architecture, which meant a visitor
+   had to work through why the thing exists before learning what it does.
+
+   The job is to make the app feel finished and ordinary, and to prove "for
+   everybody" with the five-word file vocabulary rather than by asserting
+   simplicity.
 
    The icons are the app's own tab icons, in the app's own order, so the
    site's iconography is literally the product's. Never add a heart glyph —
@@ -64,7 +68,7 @@ const FILE_STATES = ['Saved', 'Private', 'Backed up', 'Published', 'Needs attent
 export function RoomsSection() {
   return (
     <SectionWrapper id="six-rooms">
-      <SectionHeading eyebrow="WHAT IT IS">One place for the private things and the public ones.</SectionHeading>
+      <SectionHeading eyebrow="WHAT YOU GET">One identity. Seven places it becomes useful.</SectionHeading>
 
       <div className="mt-8 max-w-2xl space-y-5">
         <p className="text-lg text-gray-300 leading-relaxed">

@@ -101,16 +101,16 @@ export function ProveItSection() {
 
         <div className="card-material rounded-xl p-6">
           <h3 className="text-base font-semibold text-white">
-            For material people will argue about
+            For evidence people may dispute
           </h3>
           <p className="mt-2 text-sm text-gray-400 leading-relaxed">
-            Bonded Claims let you make one narrow, checkable statement — "this video file is the
-            unaltered one published at 14:32" — attach evidence, and let named people support,
-            dispute, formally challenge or resolve it. Nothing is ever deleted or rewritten,
-            superseded positions stay visible, and Loggie never declares what is true. There is
-            deliberately no money, no staking and no bond behind it: we proved the information
-            model before the money model.
+            Loggie also has an experimental claim protocol for attaching evidence, support,
+            disputes and resolution history to one precise statement. It records provenance rather
+            than deciding truth, and nothing in it is ever deleted or rewritten. There is
+            deliberately no money, no staking and no bond behind it yet.
           </p>
+          {/* No link: there is no Bonded Claims page to send anyone to. When one
+              exists, this is where it goes. Never link a page that isn't there. */}
         </div>
       </div>
 
