@@ -48,10 +48,10 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" className="flex items-center shrink-0" aria-label="Loggie — home">
             <img
-              src="/loggie-nav-logo-phase-3.png"
+              src="/loggie-wordmark.png"
               alt="Loggie"
-              width={160}
-              height={40}
+              width={324}
+              height={120}
               className="h-7 sm:h-8 md:h-9 w-auto"
             />
           </Link>
