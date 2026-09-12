@@ -1,197 +1,127 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Github, FileText, Mail } from 'lucide-react';
-import { useRequestAccess } from '../context/RequestAccessContext';
+import { Link } from 'react-router-dom';
+
+const APP_URL = 'https://app.loggielabs.com';
+
+/*
+ * Every link here resolves. The previous footer pointed at
+ * github.com/loggie-xyz, which does not exist — the organisation is LoggieLabs,
+ * and no Loggie repository is public yet, so there is no repository link at all
+ * rather than a dead one. Do not add a GitHub, npm, X or Discord link until
+ * there is something real behind it.
+ */
+
+const columns = [
+  {
+    heading: 'Loggie',
+    links: [
+      { label: 'Open Loggie', href: APP_URL, external: true },
+      { label: 'What it is', href: '/#six-rooms' },
+      { label: 'How proof works', href: '/#prove-it' },
+      { label: 'The contracts', href: '/#engine-room' },
+    ],
+  },
+  {
+    heading: 'Before you decide',
+    links: [
+      { label: "What it can't do yet", href: '/#cant-do-yet' },
+      { label: 'Status and defects', href: '/status', router: true },
+      { label: 'Report a vulnerability', href: 'mailto:security@loggielabs.com' },
+    ],
+  },
+  {
+    heading: 'Legal',
+    links: [
+      { label: 'Privacy', href: '/privacy', router: true },
+      { label: 'Terms', href: '/terms', router: true },
+    ],
+  },
+];
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
-  const { handleRequestAccessClick } = useRequestAccess();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const isHomePage = location.pathname === '/';
-
-  const handleHashClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
-    e.preventDefault();
-    if (isHomePage) {
-      const element = document.getElementById(hash);
-      element?.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      navigate(`/#${hash}`);
-    }
-  };
-
-  const links = {
-    product: [
-      { label: 'Request Pilot Access', requestAccess: true },
-      { label: 'How It Works', hash: 'how-it-works' },
-      { label: 'Use Cases', hash: 'use-cases' },
-    ],
-    developers: [
-      { label: 'Documentation', to: '/docs' },
-      { label: 'Developer Access (Pilot)', requestAccess: true },
-    ],
-    company: [
-      { label: 'About', hash: 'about' },
-      { label: 'Contact', requestAccess: true },
-      { label: 'Privacy Policy', to: '/privacy' },
-      { label: 'Terms of Service', to: '/terms' },
-    ],
-  };
-
   return (
-    <footer className="bg-loggie-black border-t border-gray-800 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand */}
+    <footer className="relative bg-loggie-void border-t border-white/[0.07]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-16">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Link to="/" className="inline-block mb-4">
-              <img
-                src="/loggie-nav-logo-phase-2.png"
-                alt="Loggie Home"
-                className="h-8 w-auto"
-              />
-            </Link>
-            <p className="text-gray-400 text-sm mb-3">
-              Permanent, verifiable blockchain proof for any digital asset.
-            </p>
-            <p className="text-gray-500 text-xs mb-2">
-              Powered by{' '}
-              <Link to="https://omnituum.com/" className="text-loggie-purple hover:text-loggie-cyan transition-colors">
-                Omnituum post-quantum security
-              </Link>
-              .
-            </p>
-            <p className="text-gray-600 text-xs">
-              Omnituum provides cryptographic software components only. No custody. No data hosting.
+            <p className="text-xl font-bold gradient-text">Loggie</p>
+            <p className="mt-2 text-sm text-gray-400 leading-relaxed max-w-xs">
+              Your identity, inbox, files and people. Owned by you.
             </p>
           </div>
 
-          {/* Product Links */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Product</h4>
-            <ul className="space-y-2">
-              {links.product.map((link) => (
-                <li key={link.label}>
-                  {'requestAccess' in link && link.requestAccess ? (
-                    <a
-                      href="#request-access"
-                      onClick={handleRequestAccessClick}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  ) : 'hash' in link ? (
-                    <a
-                      href={`/#${link.hash}`}
-                      onClick={(e) => handleHashClick(e, link.hash!)}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  ) : 'to' in link ? (
-                    <Link
-                      to={link.to!}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Developer Links */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Developers</h4>
-            <ul className="space-y-2">
-              {links.developers.map((link) => (
-                <li key={link.label}>
-                  {'requestAccess' in link && link.requestAccess ? (
-                    <a
-                      href="#request-access"
-                      onClick={handleRequestAccessClick}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  ) : 'to' in link ? (
-                    <Link
-                      to={link.to!}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company Links */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Company</h4>
-            <ul className="space-y-2">
-              {links.company.map((link) => (
-                <li key={link.label}>
-                  {'requestAccess' in link && link.requestAccess ? (
-                    <a
-                      href="#request-access"
-                      onClick={handleRequestAccessClick}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  ) : 'hash' in link ? (
-                    <a
-                      href={`/#${link.hash}`}
-                      onClick={(e) => handleHashClick(e, link.hash!)}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  ) : 'to' in link ? (
-                    <Link
-                      to={link.to!}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {columns.map((col) => (
+            <nav key={col.heading} aria-label={col.heading}>
+              <h2 className="text-sm font-semibold text-white mb-4">{col.heading}</h2>
+              <ul className="space-y-2.5">
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    {'router' in link && link.router ? (
+                      <Link to={link.href} className="text-sm text-gray-400 hover:text-white transition-colors">
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={link.href}
+                        {...('external' in link && link.external
+                          ? { target: '_blank', rel: 'noopener noreferrer' }
+                          : {})}
+                        className="text-sm text-gray-400 hover:text-white transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
 
-        {/* Bottom bar */}
-        <div className="pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-sm">
-            {currentYear} Loggie. All rights reserved.
+        {/* Adjacent work, one honest line each. Neither gets more weight than this. */}
+        <div className="section-separator my-10" aria-hidden="true" />
+
+        <dl className="grid gap-6 sm:grid-cols-2 max-w-4xl">
+          <div>
+            <dt className="text-sm font-medium text-gray-300">Omnituum</dt>
+            <dd className="mt-1 text-sm text-gray-400 leading-relaxed">
+              The open-source post-quantum cryptography Loggie is built on.{' '}
+              <a
+                href="https://omnituum.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-loggie-cyan hover:underline"
+              >
+                omnituum.com
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-medium text-gray-300">Darkwire</dt>
+            <dd className="mt-1 text-sm text-gray-400 leading-relaxed">
+              An off-grid post-quantum Bluetooth mesh messenger for Android, in development: built and
+              proven in simulation, not yet validated on real radios. iOS is not implemented.
+            </dd>
+          </div>
+        </dl>
+
+        <div className="section-separator my-10" aria-hidden="true" />
+
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <p className="text-sm text-gray-400">© 2026 Loggie Labs. MIT-licensed.</p>
+          <p className="mono text-2xs text-gray-400 leading-relaxed md:text-right max-w-lg">
+            The cryptography is public on npm; the contracts are verified on Etherscan; the app and
+            SDK sources are not published yet. Public beta on Ethereum's Sepolia test network — not
+            independently audited.
           </p>
-          <div className="flex items-center gap-4">
-            <a
-              href="https://github.com/loggie-xyz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-white transition-colors"
-            >
-              <Github className="w-5 h-5" />
-            </a>
-            <Link
-              to="/docs"
-              className="text-gray-500 hover:text-white transition-colors"
-            >
-              <FileText className="w-5 h-5" />
-            </Link>
-            <a
-              href="#request-access"
-              onClick={handleRequestAccessClick}
-              className="text-gray-500 hover:text-white transition-colors"
-            >
-              <Mail className="w-5 h-5" />
-            </a>
-          </div>
         </div>
+
+        <p className="mt-6 text-2xs text-gray-400">
+          Security disclosures:{' '}
+          <a href="mailto:security@loggielabs.com" className="text-gray-400 hover:text-white transition-colors">
+            security@loggielabs.com
+          </a>{' '}
+          — acknowledged within 72 hours, fix or mitigation targeted within 90 days.
+        </p>
       </div>
     </footer>
   );

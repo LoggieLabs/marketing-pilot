@@ -1,87 +1,82 @@
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { AbstractBackground } from './shared/AbstractBackground';
-import { useRequestAccess } from '../context/RequestAccessContext';
+import { StatusStrip } from './shared/Proof';
+
+const APP_URL = 'https://app.loggielabs.com';
 
 export function HeroSection() {
-  const { handleRequestAccessClick } = useRequestAccess();
-
   return (
     <section id="hero" className="relative min-h-screen flex items-center overflow-clip">
-      {/* Procedural abstract background */}
+      {/*
+        The hex lattice with a verification pulse propagating through it every
+        eight seconds. It is not decoration — it is the thesis, animated, at
+        zero image weight, and it already honours prefers-reduced-motion.
+        This is the only place on the site it appears.
+      */}
       <AbstractBackground />
 
-      {/* Main content - centered */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center">
-            {/* Headline - audit-first, calm */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-4 leading-[1.15]">
-              <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                Independent cryptographic proof
-              </span>
-              <br />
-              <span className="bg-gradient-to-r from-loggie-purple to-loggie-cyan bg-clip-text text-transparent">
-                for records, evidence,
-              </span>
-              <br />
-              <span className="text-white">
-                and automated decisions
-              </span>
-            </h1>
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 md:py-32">
+        <div className="max-w-4xl">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold leading-[1.08] tracking-[-0.03em]">
+            <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              Everything you keep
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              online is{' '}
+            </span>
+            <span className="bg-gradient-to-r from-loggie-purple to-loggie-cyan bg-clip-text text-transparent">
+              on loan.
+            </span>
+            <br />
+            <span className="text-white">Loggie hands you the deed.</span>
+          </h1>
 
-            {/* Subtext - audit/dispute/investigation focused */}
-            <p className="text-lg sm:text-xl text-gray-400/80 max-w-2xl mx-auto mb-4 leading-relaxed">
-              Verifiable under audit, dispute, or investigation — even years later
-              and outside the originating system.
-            </p>
+          <p className="mt-8 text-lg sm:text-xl text-gray-400 leading-relaxed max-w-2xl">
+            One wallet signature builds a private identity nobody else holds — then opens it as
+            files, a journal, messages, your people and a public feed. Everything private is
+            encrypted on your own machine before it leaves it. There is no account to close and no
+            password to reset, because there is no account.
+          </p>
 
-            {/* Supporting line - infrastructure positioning */}
-            <p className="text-sm text-gray-500 mb-8">
-              Loggie provides an independent verification layer for systems
-              where record integrity must hold up under audit, dispute, or investigation.
-            </p>
+          <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+            <a
+              href={APP_URL}
+              className="px-7 py-3.5 bg-loggie-purple hover:bg-loggie-purple/90 text-white
+                         font-medium rounded-lg transition-colors text-base
+                         inline-flex items-center justify-center gap-2"
+            >
+              Open Loggie
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </a>
+            {/*
+              The spec's secondary CTA is /demo — a redirect to a real public
+              Loggie profile, readable with no wallet and no signature. No inbox
+              has been designated for it yet, and fabricating an address here
+              would break the rule the whole site is built on. Until an owner
+              names one, this scrolls to the product tour instead. See
+              README.md → "Open decisions".
+            */}
+            <a
+              href="#six-rooms"
+              className="px-7 py-3.5 text-gray-300 hover:text-white font-medium
+                         border border-gray-700 hover:border-gray-600 rounded-lg
+                         transition-colors text-base inline-flex items-center justify-center"
+            >
+              See what's inside first
+            </a>
+          </div>
 
-            {/* CTAs - pilot-first funnel */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="#request-access"
-                onClick={handleRequestAccessClick}
-                className="px-7 py-3.5 bg-loggie-purple/90 hover:bg-loggie-purple
-                           text-white font-medium rounded-lg transition-colors
-                           flex items-center gap-2 text-base"
-              >
-                Request Pilot Evaluation
-                <ArrowRight className="w-4 h-4" />
-              </a>
-              <a
-                href="#how-it-works"
-                className="group px-7 py-3.5 text-gray-300 hover:text-white
-                          font-medium transition-colors text-base
-                          flex items-center gap-2 border border-gray-700/50 rounded-lg
-                          hover:border-gray-600"
-              >
-                View How It Works
-              </a>
-            </div>
+          {/* The four things that would make the rest of this page a lie if they
+              were not said out loud. Never move this to the footer. */}
+          <StatusStrip className="mt-10" />
 
-            {/* Helper text + tertiary link */}
-            <p className="text-xs text-gray-500 mt-6 max-w-xl mx-auto">
-              Scoped evaluations for regulated and high-risk systems.{' '}
-              <a
-                href="#developers"
-                className="text-gray-400 hover:text-loggie-purple transition-colors"
-              >
-                Developer documentation →
-              </a>
-            </p>
+          <p className="mt-5 text-sm text-gray-400 leading-relaxed max-w-2xl">
+            Loggie charges you nothing and takes no markup. The only money that moves is the
+            network's own fee and the protocol fee on actions you choose to put on-chain on
+            Sepolia — and today those are paid in free test ETH.
+          </p>
         </div>
-      </div>
-
-      {/* Scroll indicator - static, no bounce */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-        <a href="#problems" className="flex flex-col items-center gap-2 text-gray-500/60 hover:text-gray-400 transition-colors">
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <ChevronDown className="w-4 h-4" />
-        </a>
       </div>
     </section>
   );

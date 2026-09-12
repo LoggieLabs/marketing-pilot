@@ -1,295 +1,148 @@
-# Loggie Marketing Pilot
+# Loggie marketing site
 
-Lightweight marketing landing page for Loggie's pilot evaluation funnel.
+The public site for Loggie — **loggielabs.com**. Deployed as a Cloudflare Pages
+project (`marketing-pilot`) with a D1 database (`marketing-pilot-intake`) behind
+the encrypted intake endpoint.
 
-## Overview
+> **This README replaced one that codified the old policy.** The previous version
+> made "Pilot-First Framing", "No implied GA", "No 'Launch App' language" and
+> "All CTAs funnel to pilot evaluation requests" into project rules. Every one of
+> those is now wrong, and leaving them in place would have had the next person
+> faithfully restore everything this revamp exists to remove.
 
-This is a standalone React + Vite app designed for enterprise and regulated-industry prospects evaluating Loggie as an independent verification layer. The site communicates **authority without overclaim** — positioned for audit, compliance, and security buyers who read literally.
+## What this site is for
 
-## Design Principles
+One job: get a visitor to open **app.loggielabs.com** and create an identity.
+Secondary: give a developer a checkable way in, and catch the readers who cannot
+install a browser wallet today.
 
-### Pilot-First Framing
-- No implied GA (general availability)
-- No "Launch App" or "npm install" language
-- All CTAs funnel to pilot evaluation requests
-- Code examples are labeled as "reference" or "pilot preview"
+## The rules
 
-### Trust Signals
-- "Reference implementation" not "live product"
-- "Scoped evaluations" not "sign up today"
-- "Pilot access" not "download now"
-- External links to Omni (omnituum.com) for cryptographic substrate
+These are not style preferences. The site's whole argument is *you don't have to
+trust us*, and that only survives if nothing on it overclaims.
 
-### Tone
-- Calm authority, no urgency spikes
-- Factual, steady, inevitable
-- Designed to pass scrutiny from security teams, auditors, and legal
+1. **Every claim carries a verifiable artefact in the same section.** Addresses,
+   transaction hashes, block numbers, CIDs, file paths. If a claim cannot carry
+   one, it either goes or it gets weaker until it is true.
+2. **Every chain sentence carries the Sepolia qualifier.** Nothing of ours is on
+   Ethereum mainnet — `exports/addresses/mainnet.json` is literally `{}`.
+3. **The primary CTA always points at app.loggielabs.com.** No gates, no forms in
+   front of the product, no "request access".
+4. **No fabricated evidence, ever.** No mock screenshots, no illustrative block
+   numbers, no example CIDs, no stock photography. The team already threw out a
+   marketing image of its own app because it carried a fake VERIFIED badge; that
+   line holds here. If a real capture does not exist, ship type and mono receipts
+   instead — several sections do exactly that and say so in a comment.
+5. **The ratified vocabulary applies.** `tamper-evident` — never `tamper-proof`,
+   `unhackable` or `quantum-proof`. Never `audited` or `secure` while no outside
+   firm has reviewed the code.
 
-## Running Locally
-
-```bash
-# Install dependencies
-pnpm install
-
-# Start dev server (port 3000)
-pnpm dev
-
-# Build for production
-pnpm build
-
-# Preview production build
-pnpm preview
-```
+`pnpm check:claims` enforces most of this mechanically, and `pnpm build` runs it
+first. It also verifies every address in `src/data/status.ts` against
+`contracts/loggie-contracts/exports/addresses/sepolia.json` when that repo is on
+disk.
 
 ## Structure
 
 ```
 src/
-├── main.tsx                 # Entry point with React Router
-├── MarketingPage.tsx        # Main page component
-├── index.css                # Global styles + Tailwind
+├── main.tsx                    # routes
+├── MarketingPage.tsx           # the 14 sections, in order
+├── data/status.ts              # ⚠ THE LEDGER — see below
 ├── components/
-│   ├── Navbar.tsx           # Fixed nav with pilot CTA
-│   ├── HeroSection.tsx      # Above-fold messaging
-│   ├── ProblemsSection.tsx  # Problem framing
-│   ├── SolutionSection.tsx  # Loggie's approach
-│   ├── UseCasesSection.tsx  # Industry applications
-│   ├── HowItWorksSection.tsx # 4-step flow
-│   ├── PreviewSection.tsx   # Reference output example
-│   ├── DevSection.tsx       # Developer tooling (pilot access)
-│   ├── TrustSection.tsx     # Trust model + Omni security
-│   ├── AboutSection.tsx     # Company context
-│   ├── CTASection.tsx       # Final conversion
-│   ├── Footer.tsx           # Links + legal
-│   ├── RequestAccessModal.tsx      # Pilot request modal
-│   ├── RequestPilotAccessForm.tsx  # Form with mailto fallback
-│   └── shared/
-│       ├── AbstractBackground.tsx  # Animated hex lattice
-│       ├── BlueprintLattice.tsx    # Static grid pattern
-│       ├── NetworkBackground.tsx   # Network visualization
-│       ├── SectionWrapper.tsx      # Consistent section styling
-│       └── LogoAnimation.tsx       # Logo effects
-├── context/
-│   └── RequestAccessContext.tsx    # Modal state provider
-└── hooks/
-    └── useRequestAccessModal.ts    # Hash routing for modal
+│   ├── shared/Proof.tsx        # Address, TxHash, Block, Evidence, StatusStrip, Caution
+│   ├── shared/SectionWrapper   # the spacing idiom, encoded once
+│   ├── shared/AbstractBackground   # hero: live hex lattice + verification pulse
+│   ├── shared/BlueprintLattice     # mid-page: the same lattice, static, 6%
+│   ├── HeroSection … StayInTouchSection
+│   └── IntakeForm.tsx          # single-field, client-encrypted
+└── pages/  StatusPage · PrivacyPage · TermsPage
 ```
 
-## Key Copy Decisions
+### `src/data/status.ts` is load-bearing
 
-| Section | Framing |
-|---------|---------|
-| Hero | "Request Pilot Evaluation" — no "Get Started" |
-| Preview | "Example verification output (reference implementation)" |
-| Developers | "Pilot preview" / "Pilot access" — no npm install |
-| CTA | "Request Pilot Access" primary, "View Reference Demo" secondary |
-| Trust | Links to omnituum.com for Omni security details |
+What is shipped, what is narrower than it sounds, what is missing, the contract
+defect register and the contract map all render from this one file. It is data,
+not prose, deliberately: the previous site went seven months out of date because
+its claims lived scattered across ten components, and **a stale honesty section
+is worse than no honesty section.**
 
-## Dependencies
+Re-stamp `LAST_VERIFIED` every time it is reviewed, whether or not anything
+changed. If you cannot find the evidence for a row, delete the row — do not
+soften it.
 
-- React 18 + React Router 7
-- Vite 5
-- Tailwind CSS 3 + Typography plugin
-- Lucide React (icons)
-- No wallet/blockchain dependencies (intentionally lightweight)
+## Routes
 
-## Encrypted Intake System
+| Route | What it is |
+|---|---|
+| `/` | the single-page site |
+| `/status` | the ledger: shipped / partial / limits / defects / contracts |
+| `/privacy`, `/terms` | rewritten for consumers — **not lawyer-reviewed** |
+| `/docs` | redirects to `/status`; there is no public documentation site |
+| `*` | redirects to `/` |
 
-This subsystem handles pilot evaluation requests with end-to-end encryption. The server never sees plaintext PII.
-
-### Does This Use IPFS?
-
-**No.**
-
-IPFS is explicitly not used in this intake flow. Rationale:
-
-1. **Privacy boundary** — IPFS content-addressing exposes ciphertext hashes to the public DHT. Even without decryption, metadata (submission timing, volume, hash patterns) leaks to any DHT participant.
-
-2. **Complexity** — Adding IPFS to the synchronous intake path introduces pinning dependencies, gateway latency, and failure modes that don't improve the security model.
-
-3. **Not needed** — D1 provides durable, queryable ciphertext storage with Cloudflare's infrastructure guarantees. The intake boundary is already cryptographically sealed.
-
-Current architecture path:
-
-```
-Browser → POST /api/intake → D1 (ciphertext only)
-```
-
-IPFS may be considered later as an async archival layer (see "Future Extensions" below), but it is **not in the intake path today**.
-
----
-
-### Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                           BROWSER                                   │
-│  ┌─────────────┐    ┌──────────────────┐    ┌───────────────────┐  │
-│  │ Form Input  │───▶│ Hybrid Encrypt   │───▶│ POST /api/intake  │  │
-│  │ (plaintext) │    │ X25519 + Kyber   │    │ (ciphertext only) │  │
-│  └─────────────┘    └──────────────────┘    └─────────┬─────────┘  │
-│                              │                        │            │
-│                              ▼                        │            │
-│                     Deterministic ID                  │            │
-│                     (BLAKE3 of ciphertext)            │            │
-└──────────────────────────────────────────────────────│────────────┘
-                                                        │
-                    ════════════════════════════════════╪════════════
-                              CLOUDFLARE                │
-                                                        ▼
-                                              ┌─────────────────┐
-                                              │ Pages Function  │
-                                              │ /api/intake.ts  │
-                                              │ (validate only) │
-                                              └────────┬────────┘
-                                                       │
-                                                       ▼
-                                              ┌─────────────────┐
-                                              │       D1        │
-                                              │ intake_requests │
-                                              │ (ciphertext)    │
-                                              └─────────────────┘
-
-                    ════════════════════════════════════════════════
-                              OPERATOR (offline)
-                                        │
-                    ┌───────────────────┼───────────────────┐
-                    │                   ▼                   │
-                    │  ┌─────────────────────────────────┐  │
-                    │  │ secrets/org.identity.json      │  │
-                    │  │ (X25519 + Kyber private keys)  │  │
-                    │  └───────────────┬─────────────────┘  │
-                    │                  │                    │
-                    │                  ▼                    │
-                    │  ┌─────────────────────────────────┐  │
-                    │  │ decrypt-intake.mjs             │  │
-                    │  │ → plaintext                    │  │
-                    │  └─────────────────────────────────┘  │
-                    └───────────────────────────────────────┘
-```
-
----
-
-### Invariants (Non-Negotiable)
-
-These invariants define the security boundary. Violating any of them breaks the trust model.
-
-| Invariant | Description |
-|-----------|-------------|
-| **Ciphertext-only storage** | D1 stores only `encrypted_json`. No plaintext column exists. |
-| **No server-side decryption** | The Worker validates envelope shape but never decrypts content. |
-| **Client-computed intake ID** | The deterministic ID (BLAKE3 hash of ciphertext) is computed in-browser. Server does not recompute or trust its own hash. |
-| **Org private keys are operator-only** | `secrets/org.identity.json` is never committed, never deployed, never accessible to Cloudflare. |
-| **CORS via allowlist** | `ALLOWED_ORIGINS` env var controls which origins can POST. Response includes `Vary: Origin`. |
-
----
-
-### Operator Workflow
-
-#### Step 1 — Generate org identity (one-time, offline)
-
-Creates the org's hybrid keypair. Private keys stay in `./secrets/`. Only public keys go to Cloudflare.
+## Running it
 
 ```bash
-node scripts/decrypt-intake.mjs --gen-org-identity ./secrets/org.identity.json
+pnpm install
+pnpm dev          # port 3000
+pnpm check:claims # the copy lint
+pnpm typecheck
+pnpm build        # lint → tsc → vite
 ```
 
-Copy the printed values to Cloudflare Pages environment variables:
+## Open decisions
 
-```
-VITE_OMNITUUM_X25519_PUB_HEX=<printed-value>
-VITE_OMNITUUM_KYBER_PUB_B64=<printed-value>
-```
+Carried from the ecosystem review. Each one is a real choice, not a to-do.
 
-**Never commit `org.identity.json`.**
+1. **`/demo` has no target.** The spec's secondary CTA is a redirect to a real
+   public Loggie profile (`app.loggielabs.com/#/i/<inbox>`) — the only
+   zero-friction path for visitors who will not install a wallet. No inbox has
+   been designated and inventing an address would break rule 4, so the hero's
+   secondary button currently scrolls to the product tour. Designate an inbox you
+   are happy to leave public and wire `/demo` in `public/_redirects`.
+2. **Intake posts to an external worker, not to this site.** The endpoint comes
+   from `VITE_INTAKE_ENDPOINT` (`src/lib/env.ts`), which must be set in
+   Cloudflare Pages — the form is dead without it — and a guard hard-fails if it
+   is ever pointed back at `loggielabs.com`, which has no intake worker behind
+   it. `functions/api/intake.ts` and the `marketing-pilot-intake` D1 binding are
+   therefore **not** the production path today. They are still in the tree and
+   have been hardened (origins are now refused rather than echoed back and then
+   processed, the honeypot is enforced, per-IP rate limiting added behind an
+   `INTAKE_RATE` KV binding), but `wrangler.toml` still carries
+   `database_id = "local"`. Decide whether that function is retired or wired up.
+3. **`@omnituum/secure-intake-client` arrives without its `dist/`.** The
+   encryptor is therefore loaded lazily at submit time; when it cannot load, the
+   form reports that and **sends nothing**. There is no plaintext fallback and
+   there must never be one. Fix the dependency to restore the form.
+4. **`/status` needs a named owner and a cadence.** It currently names a mailbox.
+5. **Screenshots.** Three sections are marked in comments as wanting a real
+   capture of the app (Files panel, the certificate export, the verifier). They
+   ship as type and mono receipts until genuine captures exist.
+6. **Privacy and Terms need counsel.** Both were rewritten out of the pilot/NDA
+   register, and both say so at the top of the file.
+7. **`sites/loggie-marketing/web3/`** is a stale fork of this app — dead CTAs, a
+   form that sends nothing, the retired "Omni" brand. The ecosystem review
+   recommends deleting it. Its two useful CSS fixes (iOS overscroll and safe-area
+   padding, and the `body.marketing-page` overflow rule that was a no-op here)
+   have already been ported into `src/index.css`, so nothing is lost by removing
+   it. Left in place pending your call.
 
-#### Step 2 — Local development
+## Design notes
 
-```bash
-pnpm build
-pnpm dev:pages
-```
+The site inherits the app's design language so that clicking **Open Loggie**
+feels like staying in the same building: `#07080C` substrate, flat surfaces,
+hairline borders, border-colour as the only hover affordance, no shadows, no
+scroll-triggered motion.
 
-Submit the intake form at `http://localhost:8788`.
+Two conventions worth knowing before editing:
 
-#### Step 3 — Export and decrypt
+- **Monospace is content, not decoration.** It is reserved for real addresses,
+  CIDs, hashes and block numbers — it is the site's signature for *this is
+  checkable*. Never use it as a label face.
+- **The proof rule** (`<Evidence>`) marks a block whose claim has an artefact
+  behind it. Its absence is information. Never add it for visual rhythm.
 
-```bash
-# Export latest ciphertext from local D1
-node scripts/decrypt-intake.mjs --dump-latest --db-local --out ./tmp/encrypted.json
-
-# Decrypt offline
-node scripts/decrypt-intake.mjs ./secrets/org.identity.json ./tmp/encrypted.json
-```
-
-#### Step 4 — Print public keys (for rotation/verification)
-
-```bash
-node scripts/decrypt-intake.mjs --print-pub ./secrets/org.identity.json
-```
-
----
-
-### Environment Variables
-
-All env vars are set in **Cloudflare Pages → Settings → Environment variables**.
-
-**Build-time (client, public):**
-
-| Variable | Description |
-|----------|-------------|
-| `VITE_OMNITUUM_X25519_PUB_HEX` | Org X25519 public key (hex) |
-| `VITE_OMNITUUM_KYBER_PUB_B64` | Org Kyber768 public key (base64) |
-
-**Runtime (server, optional):**
-
-| Variable | Description |
-|----------|-------------|
-| `INTAKE_IP_SALT` | Salt for IP address hashing (privacy) |
-| `ALLOWED_ORIGINS` | Comma-separated CORS allowlist |
-
-**Local development** uses `.env` (client) and `.dev.vars` (server). See `.env.example` and `.dev.vars.example`.
-
----
-
-### What This System Is NOT
-
-- Not a Loggie inbox
-- Not a registry identity
-- Not CLI-managed
-- Not on-chain
-- Not IPFS-backed
-
-This is a **standalone encrypted intake boundary** for pilot evaluation requests only.
-
----
-
-### Future Extensions (Out of Scope Today)
-
-The following may be added later but are **explicitly not implemented**:
-
-#### IPFS Anchoring (optional, async)
-
-If IPFS is added, it would be as an **asynchronous archival layer**:
-
-- Ciphertext CID or hash anchored to IPFS after D1 write (not in request path)
-- Must not block intake submission
-- Must not expose metadata to DHT during synchronous flow
-- Must preserve all invariants above
-
-**This is not in scope for the current implementation.**
-
-#### Other Potential Extensions
-
-- Admin UI for viewing/exporting submissions
-- Inbox posting (forward decrypted content to Loggie inbox)
-- Webhook notifications
-
-All extensions must preserve the ciphertext-only intake boundary.
-
-## Notes
-
-- The `#request-access` hash triggers the pilot modal
-- Form submissions are encrypted client-side before POST
-- All Omni references link externally to omnituum.com
-- No `/app` routes — this is marketing only
+The purple→cyan gradient appears exactly three times site-wide: the hero's second
+line, one hairline in the engine-room section, and the scrollbar. That restraint
+is what stops a dark site reading as a crypto landing page.

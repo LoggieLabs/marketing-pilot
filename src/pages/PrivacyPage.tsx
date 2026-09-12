@@ -1,66 +1,101 @@
-import { PilotPageLayout } from '../components/PilotPageLayout';
+import { PageLayout } from '../components/PageLayout';
 
+/*
+ * Rewritten out of the pilot register. The "What we do not collect" section is
+ * kept almost verbatim from the previous version — it was the best copy on the
+ * old site — with the pilot-programme scoping removed and the encrypted-intake
+ * detail added, because that is now the only thing this website collects.
+ *
+ * NOT LEGAL ADVICE AND NOT LAWYER-REVIEWED. The open questions list flags this
+ * page and /terms as needing counsel before launch.
+ */
 export function PrivacyPage() {
   return (
-    <PilotPageLayout
-      title="Privacy Policy"
-      subtitle="How data is handled during the Loggie pilot phase."
+    <PageLayout
+      title="Privacy"
+      subtitle="What this website collects, what the app does not, and what we cannot see even if we wanted to."
     >
-      <section className="space-y-6 text-gray-300">
+      <div className="space-y-6 text-gray-300 leading-relaxed">
         <p>
-          This privacy policy applies to participants in the Loggie pilot program.
-          It describes current data handling practices during this evaluation phase.
+          There are two separate things here: this marketing website, and the Loggie app at
+          app.loggielabs.com. They collect very different amounts, so they are described separately.
         </p>
 
-        <h2 className="text-xl font-semibold text-white mt-8">Pilot Program Scope</h2>
+        <h2 className="text-xl font-semibold text-white pt-6">This website</h2>
         <p>
-          Loggie is currently available through controlled pilot access only. The data
-          practices described here apply specifically to pilot participants and may be
-          updated prior to general availability.
+          If you fill in the email form, your submission is encrypted in your browser before it is
+          sent. Our server stores the ciphertext and cannot read it — the database has no plaintext
+          column, so this is structural rather than a promise. Only an offline key on a machine that
+          is not connected to this site can open it.
         </p>
-
-        <h2 className="text-xl font-semibold text-white mt-8">Data We Collect</h2>
-        <p>
-          During the pilot, Loggie collects limited information necessary to operate,
-          evaluate, and support the service, including:
-        </p>
+        <p>Alongside the ciphertext the server records:</p>
         <ul className="list-disc list-inside space-y-2 text-gray-400">
-          <li>Contact information provided during pilot registration</li>
-          <li>Limited usage metadata related to feature interaction and system behavior</li>
-          <li>Feedback, inquiries, and communications provided by pilot participants</li>
+          <li>a submission id computed in your browser, which the server only shape-checks</li>
+          <li>the time it arrived</li>
+          <li>a salted SHA-256 hash of your IP address — not the address itself</li>
+          <li>your browser's user-agent and referring page</li>
         </ul>
-        <p className="text-gray-400 mt-3">
-          This information is used solely to support pilot operations, improve reliability,
-          and inform product development.
+        <p className="text-gray-400">
+          There is no analytics script, no advertising pixel, no session recording and no
+          third-party tag on this site.
         </p>
 
-        <h2 className="text-xl font-semibold text-white mt-8">Data We Do Not Collect</h2>
+        <h2 className="text-xl font-semibold text-white pt-6">What we do not collect</h2>
         <p>
-          Loggie is designed around cryptographic proof, not data custody. As part of the
-          pilot program, Loggie does not:
+          Loggie is designed around cryptographic proof, not data custody. Loggie does not:
         </p>
         <ul className="list-disc list-inside space-y-2 text-gray-400">
-          <li>Store, host, or retain user files or digital assets</li>
-          <li>Retain copies of content that participants verify</li>
+          <li>Store, host, or retain your files or digital assets in readable form</li>
+          <li>Retain copies of content you verify</li>
           <li>Access or store private keys, signing keys, or wallet credentials</li>
         </ul>
-        <p className="text-gray-400 mt-3">
-          User content remains under the control of the participant at all times.
+        <p className="text-gray-400">Your content remains under your control at all times.</p>
+
+        <h2 className="text-xl font-semibold text-white pt-6">The app</h2>
+        <p>
+          Your keys are generated on your own device from a wallet signature. Files, journal entries
+          and your private contacts vault are encrypted in your browser before anything is uploaded;
+          the sealed object carries no filename, file type, timestamp, wallet address or recipient
+          list. Messages are end-to-end encrypted but still use an older envelope that carries
+          routing hints in the open — see{' '}
+          <a href="/status" className="text-loggie-cyan hover:underline">
+            Status
+          </a>
+          .
+        </p>
+        <p>
+          Loggie Labs operates two services the app uses by default: a storage gateway and a feed
+          discovery index. Both are replaceable, and the index is never the source of truth — your
+          browser re-derives the feed from the chain. Both can see request metadata such as IP
+          addresses and the content identifiers you ask for. They cannot read your encrypted
+          content.
         </p>
 
-        <h2 className="text-xl font-semibold text-white mt-8">Changes During the Pilot</h2>
+        <h2 className="text-xl font-semibold text-white pt-6">What a public blockchain means</h2>
         <p>
-          As an early-stage service, data handling practices may evolve as the pilot
-          progresses. Pilot participants will be notified of any material changes to
-          data handling before such changes take effect.
+          Anything you choose to anchor is written to Ethereum's Sepolia test network, which is
+          public and permanent. What goes on the chain is a fingerprint, a pointer and a timestamp —
+          never the file, its name or its contents. It cannot be deleted or un-anchored afterwards,
+          by you or by us. The Journal has no erasure. We do not offer a right to be forgotten we
+          cannot deliver.
         </p>
 
-        <h2 className="text-xl font-semibold text-white mt-8">Pilot Inquiries</h2>
+        <h2 className="text-xl font-semibold text-white pt-6">Changes</h2>
         <p>
-          Questions regarding data practices during the pilot phase can be submitted
-          through the pilot access request process or via your designated pilot contact.
+          Loggie is in public beta and these practices may change. Material changes will be
+          published here before they take effect.
         </p>
-      </section>
-    </PilotPageLayout>
+
+        <h2 className="text-xl font-semibold text-white pt-6">Questions</h2>
+        <p>
+          Write to{' '}
+          <a href="mailto:security@loggielabs.com" className="text-loggie-cyan hover:underline">
+            security@loggielabs.com
+          </a>
+          . Security disclosures are acknowledged within 72 hours, with a fix or mitigation targeted
+          within 90 days.
+        </p>
+      </div>
+    </PageLayout>
   );
 }

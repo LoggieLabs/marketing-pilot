@@ -13,7 +13,7 @@ importers:
         version: 0.4.1
       '@omnituum/secure-intake-client':
         specifier: git+https://github.com/Omnituum/secure-intake-client.git#v0.1.1
-        version: https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/d2483c5084c8d9038e154add5b2e059a3adeb6c4(typescript@5.9.3)
+        version: https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/4e3f2cdfa65a19a921bc1168b4acf6428d1b21ae(typescript@5.9.3)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -676,8 +676,8 @@ packages:
   '@omnituum/pqc-shared@0.4.1':
     resolution: {integrity: sha512-hJA8q83RpmatMR4sAhHfd6JUjL2ba+etWNP+jocanvGnvybcs/3x+G6bUayuN/OfMMjBCosOIeOQyGh/3J6r5w==}
 
-  '@omnituum/secure-intake-client@https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/d2483c5084c8d9038e154add5b2e059a3adeb6c4':
-    resolution: {tarball: https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/d2483c5084c8d9038e154add5b2e059a3adeb6c4}
+  '@omnituum/secure-intake-client@https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/4e3f2cdfa65a19a921bc1168b4acf6428d1b21ae':
+    resolution: {tarball: https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/4e3f2cdfa65a19a921bc1168b4acf6428d1b21ae}
     version: 0.1.0
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -1986,7 +1986,7 @@ snapshots:
       hash-wasm: 4.12.0
       tweetnacl: 1.0.3
 
-  '@omnituum/secure-intake-client@https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/d2483c5084c8d9038e154add5b2e059a3adeb6c4(typescript@5.9.3)':
+  '@omnituum/secure-intake-client@https://codeload.github.com/Omnituum/secure-intake-client/tar.gz/4e3f2cdfa65a19a921bc1168b4acf6428d1b21ae(typescript@5.9.3)':
     dependencies:
       '@omnituum/pqc-shared': 0.3.0
     optionalDependencies:

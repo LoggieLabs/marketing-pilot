@@ -9,7 +9,13 @@ interface Env {
   DB: D1Database;
   INTAKE_IP_SALT?: string;
   ALLOWED_ORIGINS?: string;
+  /** Optional KV namespace used for per-IP rate limiting. Absent in local dev. */
+  INTAKE_RATE?: KVNamespace;
 }
+
+// Rate limit: submissions allowed per IP per window.
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_SECONDS = 600;
 
 interface IntakeEnvelope {
   v: string;
@@ -35,6 +41,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   // CORS preflight is handled by onRequestOptions
   const corsHeaders = getCorsHeaders(request, env.ALLOWED_ORIGINS);
 
+  // An Origin that is not on the allow-list is refused outright. The previous
+  // implementation echoed allowed[0] back and then processed the POST anyway,
+  // which meant the allow-list constrained only the response header, not who
+  // could write to the table.
+  if (!isOriginAllowed(request, env.ALLOWED_ORIGINS)) {
+    return jsonResponse({ ok: false, error: "Origin not allowed" }, 403, corsHeaders);
+  }
+
   try {
     // Size check
     const contentLength = request.headers.get("content-length");
@@ -56,6 +70,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return jsonResponse({ ok: false, error: validation.error }, 400, corsHeaders);
     }
 
+    // Honeypot. The browser form ships an off-screen "website" field that a
+    // person never fills in. If the client puts it on the envelope, a non-empty
+    // value is a bot and the submission is dropped — with a 201 so the bot
+    // cannot distinguish rejection from success.
+    if (typeof (body as { hp?: unknown }).hp === "string" && (body as { hp: string }).hp.length > 0) {
+      return jsonResponse({ ok: true, id: body.id, status: "created" }, 201, corsHeaders);
+    }
+
     // Capture metadata
     const ua = request.headers.get("user-agent") || null;
     const ref = request.headers.get("referer") || null;
@@ -63,6 +85,24 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const ipHash = ip && env.INTAKE_IP_SALT
       ? await hashIp(ip, env.INTAKE_IP_SALT)
       : null;
+
+    // Per-IP rate limit. Requires an INTAKE_RATE KV binding; when it is absent
+    // (local dev) the endpoint runs unlimited, which is why the binding must be
+    // configured before this takes public traffic.
+    if (env.INTAKE_RATE && ipHash) {
+      const key = `rl:${ipHash}`;
+      const seen = parseInt((await env.INTAKE_RATE.get(key)) || "0", 10);
+      if (seen >= RATE_LIMIT_MAX) {
+        return jsonResponse(
+          { ok: false, error: "Too many submissions. Try again later." },
+          429,
+          corsHeaders
+        );
+      }
+      await env.INTAKE_RATE.put(key, String(seen + 1), {
+        expirationTtl: RATE_LIMIT_WINDOW_SECONDS,
+      });
+    }
 
     // Insert into D1
     const receivedAt = new Date().toISOString();
@@ -99,8 +139,25 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
 export const onRequestOptions: PagesFunction<Env> = async (context) => {
   const corsHeaders = getCorsHeaders(context.request, context.env.ALLOWED_ORIGINS);
+  if (!isOriginAllowed(context.request, context.env.ALLOWED_ORIGINS)) {
+    return new Response(null, { status: 403, headers: corsHeaders });
+  }
   return new Response(null, { status: 204, headers: corsHeaders });
 };
+
+/**
+ * True when the request may write. With no ALLOWED_ORIGINS configured the
+ * endpoint is open (local dev). With it configured, only the listed origins —
+ * and same-origin requests, which carry no Origin header — are allowed.
+ */
+function isOriginAllowed(request: Request, allowedOrigins?: string): boolean {
+  if (!allowedOrigins) return true;
+  const allowed = allowedOrigins.split(",").map(o => o.trim()).filter(Boolean);
+  if (allowed.includes("*")) return true;
+  const origin = request.headers.get("origin");
+  if (!origin) return true; // same-origin form post
+  return allowed.includes(origin);
+}
 
 function validateEnvelope(body: unknown): { ok: true } | { ok: false; error: string } {
   if (!body || typeof body !== "object") {
@@ -149,10 +206,14 @@ function getCorsHeaders(request: Request, allowedOrigins?: string): Headers {
   let allowOrigin = "*";
   if (allowedOrigins) {
     const allowed = allowedOrigins.split(",").map(o => o.trim());
-    if (allowed.includes(origin)) {
+    if (allowed.includes("*")) {
+      allowOrigin = "*";
+    } else if (allowed.includes(origin)) {
       allowOrigin = origin;
-    } else if (!allowed.includes("*")) {
-      allowOrigin = allowed[0] || "*";
+    } else {
+      // Not on the list. Echo nothing usable back — never allowed[0], which
+      // handed a stranger a header naming an origin they are not.
+      allowOrigin = "null";
     }
   }
 

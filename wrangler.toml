@@ -7,4 +7,19 @@ compatibility_date = "2024-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "marketing-pilot-intake"
-database_id = "local"  # Replace with actual ID after: wrangler d1 create marketing-pilot-intake
+# BLOCKING BEFORE DEPLOY: this is still the placeholder. A fresh clone cannot
+# deploy until it carries the real id from `wrangler d1 create marketing-pilot-intake`
+# (or `wrangler d1 list` for the existing database).
+database_id = "local"
+
+# Per-IP rate limiting for /api/intake. Without this binding the endpoint runs
+# unlimited — configure it before the form takes public traffic.
+#   wrangler kv:namespace create INTAKE_RATE
+# [[kv_namespaces]]
+# binding = "INTAKE_RATE"
+# id = "<namespace id>"
+
+# Origins permitted to POST to /api/intake. With this unset the endpoint accepts
+# any origin; with it set, anything else is refused with 403.
+# [vars]
+# ALLOWED_ORIGINS = "https://loggielabs.com,https://www.loggielabs.com"

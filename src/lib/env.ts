@@ -1,8 +1,22 @@
 /**
- * Environment configuration for intake encryption
+ * Environment configuration for intake encryption.
+ *
+ * The endpoint, the guard and the error messages below are from
+ * 5e63f3f ("read intake endpoint from VITE_INTAKE_ENDPOINT env var") and are
+ * kept verbatim. Intake does NOT post to this site — it goes to the
+ * secure-intake worker, and the guard exists because loggielabs.com has no
+ * intake worker behind it.
+ *
+ * Cloudflare Pages env var to set:
+ *   VITE_INTAKE_ENDPOINT=https://secure-intake.omnituum.com/api/intake
+ *
+ * What changed: `createIntakeClient()` used to live here and statically
+ * imported @omnituum/secure-intake-client. That package's published tarball
+ * currently arrives without its `dist/`, which made the whole marketing site
+ * unbuildable because of one form. The client is now constructed lazily in
+ * lib/requestAccess.ts; this module stays pure config so it can be imported
+ * from anywhere without dragging the encryptor in.
  */
-
-import { createPilotAccessClient } from "@omnituum/secure-intake-client/presets/pilot-access";
 
 export interface IntakeEnv {
   endpoint: string;
@@ -42,18 +56,4 @@ export function getIntakeEnv(): IntakeEnv {
   }
 
   return { endpoint, x25519PubHex, kyberPubB64 };
-}
-
-/**
- * Create the pilot access intake client configured with env vars.
- */
-export function createIntakeClient() {
-  const env = getIntakeEnv();
-  return createPilotAccessClient({
-    endpoint: env.endpoint,
-    publicKeys: {
-      x25519PubHex: env.x25519PubHex,
-      kyberPubB64: env.kyberPubB64,
-    },
-  });
 }

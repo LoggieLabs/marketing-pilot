@@ -1,30 +1,76 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/loggie-orb-icon.png" />
     <link rel="apple-touch-icon" href="/loggie-orb-icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
 
-    <!-- Primary Meta Tags -->
-    <title>Loggie - Independent Cryptographic Proof for Records & Evidence</title>
-    <meta name="title" content="Loggie - Independent Cryptographic Proof for Records & Evidence" />
-    <meta name="description" content="Independent verification layer for records, evidence, and automated decisions. Verifiable under audit, dispute, or investigation — even years later." />
+    <!--
+      CLAIM VOCABULARY — this document is held to the same ratified rules as the
+      app's own shipped metadata (products/loggie-app/index.html):
+        "tamper-evident"  — allowed
+        "tamper-proof" / "unhackable" / "quantum-proof" — banned
+      Every chain reference must carry the Sepolia qualifier. Nothing here may
+      claim an audit, a mainnet deployment, or an npm package that does not exist.
+    -->
+    <title>Loggie — Your identity, inbox, files and people. Owned by you.</title>
+    <meta name="title" content="Loggie — Your identity, inbox, files and people. Owned by you." />
+    <meta
+      name="description"
+      content="A private identity, files, journal, messages and a public feed that belong to you. Everything private is encrypted on your own machine before it leaves it. Public beta on Ethereum's Sepolia test network."
+    />
+    <link rel="canonical" href="https://loggielabs.com/" />
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Loggie - Cryptographic Proof Infrastructure" />
-    <meta property="og:description" content="Independent cryptographic proof for records, decisions, and evidence." />
+    <meta property="og:site_name" content="Loggie" />
+    <meta property="og:url" content="https://loggielabs.com/" />
+    <meta property="og:title" content="Loggie — Your identity, inbox, files and people. Owned by you." />
+    <meta
+      property="og:description"
+      content="One wallet signature builds a private identity nobody else holds. Public beta on Ethereum's Sepolia test network — not independently audited."
+    />
     <meta property="og:image" content="https://loggielabs.com/loggie-thumb-nail.v1.0.0.png" />
+    <meta property="og:image:alt" content="Loggie — your identity, inbox, files and people, owned by you" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="Loggie - Cryptographic Proof Infrastructure" />
-    <meta property="twitter:description" content="Independent cryptographic proof for records, decisions, and evidence." />
-    <meta property="twitter:image" content="https://loggielabs.com/loggie-thumb-nail.v1.0.0.png" />
+    <!-- X / Twitter. No twitter:site handle: no official account is recorded in
+         this repo, and inventing one would mis-attribute the product. -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Loggie — Your identity, inbox, files and people. Owned by you." />
+    <meta
+      name="twitter:description"
+      content="One wallet signature builds a private identity nobody else holds. Public beta on Ethereum's Sepolia test network — not independently audited."
+    />
+    <meta name="twitter:image" content="https://loggielabs.com/loggie-thumb-nail.v1.0.0.png" />
 
-    <!-- Theme -->
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#07080C" />
+
+    <!-- Typography. Inter was declared by the old stylesheet and never fetched,
+         so most machines silently fell back to system-ui. It is loaded now.
+         JetBrains Mono carries every address, CID, hash and block number —
+         on this site monospace is content, not decoration. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Conservative JSON-LD. Only facts this repo can support. No ratings,
+         pricing, reviews, awards or social accounts are asserted. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Loggie",
+        "url": "https://loggielabs.com/",
+        "description": "A private identity, files, journal, messages and a public feed that belong to you. Public beta on Ethereum's Sepolia test network."
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
