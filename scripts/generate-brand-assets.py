@@ -9,10 +9,17 @@ this replaced still read "Independent cryptographic proof for records,
 decisions, and evidence" — the pilot-era positioning — long after the site
 stopped saying it. Every shared link was selling the old company.
 
-Everything below derives from the site's real tokens (tailwind.config.js) and
-its real visual signature, the hexagonal lattice in shared/AbstractBackground.tsx
-whose verification pulse propagates through the hero. Nothing here invents a
-brand colour and nothing states a claim the page does not.
+THE MARK IS NOT REDRAWN HERE. It is the Loggie orb, the same one
+app.loggielabs.com carries, and it stays exactly as supplied — an earlier pass
+swapped it for a generic hexagon, which was a brand decision dressed up as a
+technical fix and split this site from the flagship product. Everything this
+script does to it is delivery: correct rasters, a dark ground for contrast,
+and sane file sizes.
+
+The rest derives from the site's real tokens (tailwind.config.js) and its real
+background motif, the hexagonal lattice in shared/AbstractBackground.tsx whose
+verification pulse propagates through the hero. Nothing here invents a brand
+colour and nothing states a claim the page does not.
 
 Run:  python3 scripts/generate-brand-assets.py
 """
@@ -86,43 +93,49 @@ def hexagon(cx: float, cy: float, r: float, rotate: float = 0.0):
 
 # ── Favicon ──────────────────────────────────────────────────────────────────
 #
-# The icon this replaces was 543x543 and 424 KB — for a 16-pixel slot — drawn as
-# a chain link over an isometric cube inside a network ring, on a transparent
-# light ground. Three separate problems: it was invisible against a light tab
-# strip, it was far too detailed to resolve at 16px, and its acid-green palette
-# appears nowhere in this site's tokens.
+# The mark is the Loggie orb — the same one app.loggielabs.com uses — and it is
+# NOT redrawn here. An earlier pass replaced it with a generic hexagon; that was
+# a brand decision dressed up as a technical fix, and it split the marketing
+# site from the flagship product.
 #
-# What replaces it is one hexagon: the site's own lattice motif reduced to a
-# single node. It carries a dark rounded-square ground so it holds contrast on
-# both light and dark tab strips, and it survives being shrunk to 16px because
-# there is only one shape to read.
+# The real defects were all in delivery, and all of them are fixed without
+# touching the artwork:
+#   * one 543px, 424 KB PNG served for every slot, downscaled by the browser
+#   * no 32/48/180 rasters at all
+#   * thin pale-green linework with no ground, so it sits weakly on a light
+#     tab strip
+#
+# A dark rounded tile gives it a definite silhouette on light and dark chrome
+# alike. At 16px a mark this detailed resolves to a coloured disc — that is a
+# property of the slot, not a fault in the artwork, and no icon with this much
+# structure survives it. At 32 and 48 the chain link, cube cluster and node
+# ring all read.
 
-def build_icon(size: int) -> Image.Image:
-    ss = 8  # supersample, then downsample — keeps the edges clean at 16px
+MARK_SRC = ROOT / "brand" / "loggie-orb-source.png"
+
+
+def load_mark() -> Image.Image:
+    im = Image.open(MARK_SRC).convert("RGBA")
+    return im.crop(im.getbbox())  # trim the transparent margin
+
+
+def build_icon(size: int, mark: Image.Image) -> Image.Image:
+    ss = 6  # supersample so the tile corners and the linework stay clean
     s = size * ss
-    img = Image.new("RGB", (s, s), VOID)
-    draw = ImageDraw.Draw(img)
+    img = Image.new("RGBA", (s, s), (0, 0, 0, 0))
 
-    # Rounded-square ground.
-    mask = Image.new("L", (s, s), 0)
-    ImageDraw.Draw(mask).rounded_rectangle([0, 0, s - 1, s - 1], radius=int(s * 0.22), fill=255)
-
-    # The hexagon, filled with the brand gradient.
-    hex_r = s * 0.33
-    hex_mask = Image.new("L", (s, s), 0)
-    ImageDraw.Draw(hex_mask).polygon(hexagon(s / 2, s / 2, hex_r, rotate=30), fill=255)
-    paste_gradient(img, hex_mask, (int(s / 2 - hex_r), int(s / 2 - hex_r),
-                                   int(s / 2 + hex_r), int(s / 2 + hex_r)))
-
-    # The verification node at its centre — the one detail small enough to keep.
-    node_r = s * 0.085
-    draw.ellipse(
-        [s / 2 - node_r, s / 2 - node_r, s / 2 + node_r, s / 2 + node_r],
-        fill=VOID,
+    tile = Image.new("RGBA", (s, s), VOID + (255,))
+    tile_mask = Image.new("L", (s, s), 0)
+    ImageDraw.Draw(tile_mask).rounded_rectangle(
+        [0, 0, s - 1, s - 1], radius=int(s * 0.22), fill=255
     )
+    img.paste(tile, (0, 0), tile_mask)
+
+    inset = int(s * 0.10)
+    img.alpha_composite(mark.resize((s - inset * 2, s - inset * 2), Image.LANCZOS), (inset, inset))
 
     out = Image.new("RGBA", (s, s), (0, 0, 0, 0))
-    out.paste(img, (0, 0), mask)
+    out.paste(img, (0, 0), tile_mask)
     return out.resize((size, size), Image.LANCZOS)
 
 
@@ -193,13 +206,13 @@ def build_share_card() -> Image.Image:
         fill=GRAY_300,
     )
 
-    # The hexagon mark, mirroring the favicon so the two read as one system.
-    cx, cy, r = 980, 300, 104
-    hex_mask = Image.new("L", (W, H), 0)
-    ImageDraw.Draw(hex_mask).polygon(hexagon(cx, cy, r, rotate=30), fill=255)
-    paste_gradient(img, hex_mask, (cx - r, cy - r, cx + r, cy + r))
+    # The orb, the same mark the favicon and the app carry.
+    mark = load_mark()
+    mh = 260
+    mw = round(mark.width * mh / mark.height)
+    scaled = mark.resize((mw, mh), Image.LANCZOS)
+    img.paste(scaled, (980 - mw // 2, 300 - mh // 2), scaled)
     draw = ImageDraw.Draw(img, "RGBA")
-    draw.ellipse([cx - 26, cy - 26, cx + 26, cy + 26], fill=VOID)
 
     # The same disclosure the hero carries. Never ship this card without it.
     m_font = font(FONT_MONO, 19)
@@ -232,10 +245,14 @@ def build_wordmark() -> Image.Image | None:
 def main() -> None:
     PUBLIC.mkdir(parents=True, exist_ok=True)
 
+    mark = load_mark()
     for size in (16, 32, 48, 180, 512):
         name = "apple-touch-icon.png" if size == 180 else f"favicon-{size}x{size}.png"
         path = PUBLIC / name
-        build_icon(size).save(path, optimize=True)
+        icon = build_icon(size, mark)
+        if size >= 180:
+            icon = icon.quantize(colors=128, method=Image.FASTOCTREE)
+        icon.save(path, optimize=True)
         print(f"  {name:<26} {size}x{size}  {path.stat().st_size / 1024:.1f} KB")
 
     card = PUBLIC / "loggie-share-card.png"
