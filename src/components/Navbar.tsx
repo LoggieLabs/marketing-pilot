@@ -12,6 +12,9 @@ const navLinks = [
   { label: "What it can't do", hash: 'cant-do-yet' },
 ];
 
+/** Routed links, kept apart from the in-page anchors above. */
+const pageLinks = [{ label: 'For work', to: '/for-work' }];
+
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -67,6 +70,15 @@ export function Navbar() {
               >
                 {link.label}
               </a>
+            ))}
+            {pageLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                {link.label}
+              </Link>
             ))}
           </div>
 

@@ -74,7 +74,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     // person never fills in. If the client puts it on the envelope, a non-empty
     // value is a bot and the submission is dropped — with a 201 so the bot
     // cannot distinguish rejection from success.
-    if (typeof (body as { hp?: unknown }).hp === "string" && (body as { hp: string }).hp.length > 0) {
+    const honeypot = (body as IntakeEnvelope & { hp?: unknown }).hp;
+    if (typeof honeypot === "string" && honeypot.length > 0) {
       return jsonResponse({ ok: true, id: body.id, status: "created" }, 201, corsHeaders);
     }
 

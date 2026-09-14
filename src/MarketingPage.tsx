@@ -17,7 +17,6 @@ import { NoAlgorithmSection } from './components/NoAlgorithmSection';
 import { EngineRoomSection } from './components/EngineRoomSection';
 import { OwnBugsSection } from './components/OwnBugsSection';
 import { CantDoYetSection } from './components/CantDoYetSection';
-import { WhatItSavesSection } from './components/WhatItSavesSection';
 import { WhatItTakesSection } from './components/WhatItTakesSection';
 import { StayInTouchSection } from './components/StayInTouchSection';
 
@@ -93,7 +92,6 @@ import { StayInTouchSection } from './components/StayInTouchSection';
             the practical uses, then diligence. */}
         <OutlivesUsSection />
         <WhenItMattersSection />
-        <WhatItSavesSection />
 
         <CantDoYetSection />
         <OwnBugsSection />

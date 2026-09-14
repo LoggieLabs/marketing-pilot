@@ -1,4 +1,5 @@
-import { Home, Briefcase, Scale, FlaskConical, PenTool, FolderArchive } from 'lucide-react';
+import { Home, Briefcase, Scale, FlaskConical, PenTool, FolderArchive, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { SectionWrapper } from './shared/SectionWrapper';
 import { SectionHeading, Evidence, Caution } from './shared/Proof';
 
@@ -86,6 +87,25 @@ export function WhenItMattersSection() {
           );
         })}
       </ul>
+
+      {/* The whole economic argument, in one sentence. It used to be its own
+          section — five cost mechanisms, reconstruction, disagreement, loss,
+          verification, platform dependency — which pulled the homepage back
+          toward an ROI pitch and read as the old business framing resurfacing.
+          The mechanisms still exist, on /for-work, where that register belongs. */}
+      <p className="mt-12 max-w-2xl text-lg text-gray-300 leading-relaxed">
+        The same record that may matter to your family decades from now can save you from
+        reconstructing what happened six months from now.
+      </p>
+
+      <Link
+        to="/for-work"
+        className="mt-5 inline-flex items-center gap-1.5 text-base text-loggie-cyan
+                   hover:text-loggie-cyan/80 transition-colors"
+      >
+        How people use it professionally
+        <ArrowRight className="w-4 h-4" aria-hidden="true" />
+      </Link>
 
       {/* The honest boundary. Without this the section drifts into implying a
           legal outcome, which is exactly what the product's own certificate

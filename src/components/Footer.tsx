@@ -18,6 +18,7 @@ const columns = [
       { label: 'What you get', href: '/#six-rooms' },
       { label: 'How proof works', href: '/#prove-it' },
       { label: 'The protocol', href: '/#engine-room' },
+      { label: 'For work', href: '/for-work', router: true },
     ],
   },
   {

@@ -5,6 +5,7 @@ import MarketingPage from './MarketingPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { TermsPage } from './pages/TermsPage';
 import { StatusPage } from './pages/StatusPage';
+import { ForWorkPage } from './pages/ForWorkPage';
 import './index.css';
 
 function App() {
@@ -13,6 +14,13 @@ function App() {
       <Routes>
         <Route path="/" element={<MarketingPage />} />
         <Route path="/status" element={<StatusPage />} />
+        {/* Professional uses of the same personal record. A page, deliberately
+            not a subdomain: business.loggielabs.com would be a second surface
+            for claims to drift on, split the domain, and promise a buyer
+            something the product cannot serve yet (no team accounts, no seats,
+            desktop + MetaMask only). Revisit when a professional can do
+            something useful without a wallet, or when real inbound justifies it. */}
+        <Route path="/for-work" element={<ForWorkPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         {/*
