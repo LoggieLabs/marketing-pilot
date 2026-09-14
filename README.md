@@ -122,12 +122,34 @@ pnpm build        # lint → tsc → vite
 
 Carried from the ecosystem review. Each one is a real choice, not a to-do.
 
-1. **`/demo` has no target.** The spec's secondary CTA is a redirect to a real
-   public Loggie profile (`app.loggielabs.com/#/i/<inbox>`) — the only
-   zero-friction path for visitors who will not install a wallet. No inbox has
-   been designated and inventing an address would break rule 4, so the hero's
-   secondary button currently scrolls to the product tour. Designate an inbox you
-   are happy to leave public and wire `/demo` in `public/_redirects`.
+1. **The live app has no wallet-free entrance.** This is the highest-leverage
+   open item, and it is a product problem rather than a site one. The homepage
+   now speaks to ordinary people; the app still opens by asking for MetaMask,
+   Sepolia and faucet ETH. Nothing on the site overclaims — it states all three
+   — but the brand is one step ahead of the onboarding.
+
+   **Not a separate `/demo`.** A second, fake product surface would be another
+   thing to maintain and another place for claims to drift, and it would show
+   people a simulation rather than the product. What is wanted is a zero-friction
+   read-and-understand path *into the real app* before wallet setup becomes
+   mandatory: open a designated public Loggie, inspect a real proof, see how
+   Files, Journal and Identity are shaped, then choose "Create your Loggie".
+
+   Two things make this narrower than it looks. `generateKyberKeypairFromSeed`
+   takes a seed and does not care where it came from, so the crypto layer is
+   already wallet-agnostic; the wallet enters at exactly one point, where
+   `MasterSeedManager` takes the first 32 bytes of a `signMessage` result. And
+   `src/manifest.tsx` already carries a per-surface `requiresWallet` flag —
+   all seven main surfaces set it `true` and none set it `false`, so the
+   mechanism exists and has simply never been used the other way.
+
+   A caveat for whoever designs the passkey path: a passkey-derived seed moves
+   the recovery dependency onto Apple or Google. The data path stays sovereign,
+   but "recovery does not require Loggie Labs" would still be true while
+   "recovery does not require a custodian" quietly became false — and that
+   sentence is currently on this site. Passkey *over* a local seed keeps the
+   claim; passkey *as* the seed does not.
+
 2. **Intake posts to an external worker, not to this site.** The endpoint comes
    from `VITE_INTAKE_ENDPOINT` (`src/lib/env.ts`), which must be set in
    Cloudflare Pages — the form is dead without it — and a guard hard-fails if it

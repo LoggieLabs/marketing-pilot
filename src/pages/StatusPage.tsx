@@ -4,6 +4,7 @@ import {
   SHIPPED,
   PARTIAL,
   LIMITS,
+  LIMIT_GROUPS,
   FINDINGS,
   FINDINGS_SUMMARY,
   CONTRACT_MAP,
@@ -74,17 +75,29 @@ export function StatusPage() {
 
       {/* ── Limits ──────────────────────────────────────────────────── */}
       <Heading id="limits">What Loggie can't do yet</Heading>
-      <ol className="divide-y divide-white/[0.07] border-y border-white/[0.07]">
-        {LIMITS.map((limit) => (
-          <li key={limit.headline} className="py-5">
-            <p className="text-base leading-relaxed">
-              <span className="text-amber-300 font-medium">{limit.headline}</span>{' '}
-              <span className="text-gray-300">{limit.detail}</span>
-            </p>
-            <p className="mono text-2xs text-gray-400 mt-2 break-words">{limit.source}</p>
-          </li>
-        ))}
-      </ol>
+      {/* Grouped, because a flat list put "no likes" beside "unaudited" as
+          though they were the same kind of fact. Groups come from status.ts. */}
+      {LIMIT_GROUPS.map((group) => {
+        const rows = LIMITS.filter((l) => l.kind === group.kind);
+        if (!rows.length) return null;
+        return (
+          <div key={group.kind} className="mt-8 first:mt-0">
+            <h3 className="text-lg font-semibold text-white">{group.title}</h3>
+            <p className="mt-1 text-sm text-gray-400 leading-relaxed">{group.blurb}</p>
+            <ol className="mt-4 divide-y divide-white/[0.07] border-y border-white/[0.07]">
+              {rows.map((limit) => (
+                <li key={limit.headline} className="py-5">
+                  <p className="text-base leading-relaxed">
+                    <span className="text-amber-300 font-medium">{limit.headline}</span>{' '}
+                    <span className="text-gray-300">{limit.detail}</span>
+                  </p>
+                  <p className="mono text-2xs text-gray-400 mt-2 break-words">{limit.source}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        );
+      })}
 
       {/* ── Defect registry ─────────────────────────────────────────── */}
       <Heading id="defects">Contract defects</Heading>

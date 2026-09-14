@@ -124,63 +124,105 @@ export const PARTIAL: Capability[] = [
   },
 ];
 
-/** The required disclosure. No apology, no roadmap dates. */
+/**
+ * The required disclosure. No apology, no roadmap dates.
+ *
+ * `kind` exists because a flat list put "no likes" and "the contracts are
+ * unaudited" side by side as though they were the same sort of fact. They are
+ * not, and presenting them that way reads as a wall of defects rather than an
+ * honest account of what is unfinished versus what Loggie deliberately is.
+ *
+ *   unfinished  — will change. A gap, not a decision.
+ *   deliberate  — chosen. Will not change without someone changing their mind.
+ *   structural  — a property of the design. Cannot change without Loggie
+ *                 becoming a different thing.
+ */
+export type LimitKind = 'unfinished' | 'deliberate' | 'structural';
+
 export interface Limit {
+  kind: LimitKind;
   headline: string;
   detail: string;
   source: string;
 }
 
+export const LIMIT_GROUPS: { kind: LimitKind; title: string; blurb: string }[] = [
+  {
+    kind: 'unfinished',
+    title: 'Still unfinished',
+    blurb: 'Gaps we intend to close. These are the ones most likely to be different next year.',
+  },
+  {
+    kind: 'deliberate',
+    title: 'Deliberate',
+    blurb: 'Decisions, not omissions. They would change only if we changed our minds.',
+  },
+  {
+    kind: 'structural',
+    title: 'Structural',
+    blurb: 'Properties of how Loggie works. These do not go away without it becoming something else.',
+  },
+];
+
 export const LIMITS: Limit[] = [
   {
+    kind: 'unfinished',
     headline: "It's on a test network.",
     detail:
       "Everything runs on Ethereum's Sepolia test network. The proofs are real and independently checkable, the ETH is not real money, and nothing of ours is deployed on Ethereum mainnet — that address file is literally an empty object.",
     source: 'read-provider.ts SEPOLIA_CHAIN_ID = 11155111; exports/addresses/mainnet.json = {}',
   },
   {
+    kind: 'unfinished',
     headline: "It hasn't been audited.",
     detail:
       'No outside security firm has reviewed this code, and no audit is booked. That is a gate we have set for mainnet, not for this pilot.',
     source: 'AUDIT_CHECKLIST.md; PHASE_A_MAINNET_PILOT.md §5',
   },
   {
+    kind: 'unfinished',
     headline: 'It needs a desktop browser and MetaMask.',
     detail:
       'Phone layouts, offline use, Coinbase Wallet, Rabby and WalletConnect are not there yet. It will load on a phone, but the panels have not been reflowed for small screens.',
     source: 'Open gaps LA-01, LA-02, LA-04',
   },
   {
+    kind: 'unfinished',
     headline: 'Creating your inbox costs 0.01 ETH plus gas.',
     detail:
       'Test ETH, free from a public faucet — but you do need a funded wallet, and that is the real limit on "for everybody" today.',
     source: 'Live InboxFactoryV7 fee read 2026-09-05, routed 100% to RevenueRouter',
   },
   {
+    kind: 'unfinished',
     headline: 'An unanchored file lives on one machine.',
     detail:
       'Journal entries anchor when you save. Files do not yet. Anything still marked Saved is not in your backup.',
     source: 'SEAL_V3_ADOPTION_MATRIX known data-loss boundary',
   },
   {
+    kind: 'deliberate',
     headline: "Messages don't get the metadata-blind envelope.",
     detail:
       'Files, Journal and the contacts vault do. Messaging deliberately stays on an older envelope that carries routing hints in the clear.',
     source: 'SEAL_V3_ADOPTION_MATRIX row 19',
   },
   {
+    kind: 'deliberate',
     headline: 'There are no likes and no reactions.',
     detail:
       'On purpose. A like that costs no blockchain transaction could not be made to survive, so we did not ship a fake one.',
     source: '2026-09-11_REACTION_TRANSPORT_OPEN_QUESTIONS.md — not implemented, not designed',
   },
   {
+    kind: 'structural',
     headline: 'Nothing can be deleted.',
     detail:
       'An anchored record cannot be un-anchored, and the Journal has no erasure. We do not offer a right to be forgotten we cannot deliver.',
     source: "The product's own statement on anchor permanence",
   },
   {
+    kind: 'structural',
     headline: 'We run two services ourselves.',
     detail:
       'The default storage gateway and the feed index. Both are replaceable and the index is never the source of truth — your browser re-derives the feed from the chain and falls back to a full scan when the index is missing — but they are real services we operate.',
