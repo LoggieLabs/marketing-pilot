@@ -29,7 +29,11 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname;
-const SCAN = ['src', 'index.html'];
+// functions/ is scanned because the edge middleware carries customer-facing
+// copy — the title and description every link preview shows. Leaving one copy
+// path outside the guard on a site whose whole argument is "we do not say what
+// we cannot prove" is exactly the asymmetry that drifts first.
+const SCAN = ['src', 'functions', 'index.html'];
 const CONTEXT = 140; // chars either side of a match used for negation checks
 
 /**

@@ -16,6 +16,27 @@ One job: get a visitor to open **app.loggielabs.com** and create an identity.
 Secondary: give a developer a checkable way in, and catch the readers who cannot
 install a browser wallet today.
 
+## The rule the brand hangs on
+
+> **Loggie is for people. Businesses are one of the places people take their Loggie.**
+
+That sentence decides more than it looks like it does. It is why the homepage is
+about personal continuity rather than evidence preservation, why `/for-work` is a
+page rather than `business.loggielabs.com`, and why professional use cases are
+framed as people bringing a durable record into their work instead of as a second
+product with a second identity.
+
+It is also deliberately broad. Loggie can expand in many directions — creators,
+researchers, families, institutions — and each one is a new page standing on the
+same trunk. What it must not become is a business records platform with a consumer
+page bolted on, because that trades the one thing that makes it distinctive for a
+crowded category.
+
+Split the domain only when a professional can do something useful **without a
+wallet**, or when real inbound from one profession justifies it. As of this
+writing `NOW.md` records "Zero customer contact to date", and the app has no team
+accounts, seats or admin console.
+
 ## The rules
 
 These are not style preferences. The site's whole argument is *you don't have to
@@ -38,9 +59,15 @@ trust us*, and that only survives if nothing on it overclaims.
    firm has reviewed the code.
 
 `pnpm check:claims` enforces most of this mechanically, and `pnpm build` runs it
-first. It also verifies every address in `src/data/status.ts` against
+first. It scans `src/`, **`functions/`** and `index.html`, and verifies every
+address in `src/data/status.ts` against
 `contracts/loggie-contracts/exports/addresses/sepolia.json` when that repo is on
 disk.
+
+`functions/` is in scope because `functions/_middleware.ts` carries the title and
+description every link preview shows — Slack, LinkedIn, iMessage, X. That is
+customer-facing copy, and leaving one copy path outside the guard is the kind of
+asymmetry that drifts first.
 
 ## Structure
 
