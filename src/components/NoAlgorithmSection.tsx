@@ -6,9 +6,15 @@ import { SectionHeading, Evidence } from './shared/Proof';
 
    This was "Proof Four". It is not a proof — a visitor cannot go and check it
    the way they can check an anchor, a recovery or a ciphertext — it is a
-   product principle, and it now reads as one, sitting with the product tour
-   rather than padding the proof run to four. Three checkable proofs land
-   harder than four claims of mixed kind.
+   product principle, and it reads as one, sitting with the product tour
+   rather than padding the proof run to four.
+
+   The repositioning gave this section a reason to exist that it did not have
+   before. A chronological, unranked, provenance-carrying feed is a strange
+   social product; it is a very good CONTEMPORANEOUS RECORD. Strip the ranking
+   and the engagement metrics and what remains is the thing historians wish
+   ordinary people had left behind: what a particular group of people said and
+   witnessed, dated, attributed, and in order.
 
    Converts an absence into the feature it actually is. The deliberate refusal
    to ship likes is the clearest single proof of the product's character, so
@@ -28,7 +34,18 @@ const ABSENT = ['ranked', 'recommended', 'trending', 'liked'] as const;
 export function NoAlgorithmSection() {
   return (
     <SectionWrapper id="no-algorithm">
-      <SectionHeading eyebrow="HOW THE FEED WORKS">Nothing here is deciding what you see.</SectionHeading>
+      <SectionHeading
+        eyebrow="HOW THE FEED WORKS"
+        lede={
+          <>
+            Under the old framing this was an unusual social feed. Under this one it is something
+            else: a contemporaneous record of what a group of people actually said and saw, in the
+            order it happened.
+          </>
+        }
+      >
+        Nothing here is deciding what you see.
+      </SectionHeading>
 
       <div className="mt-12 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
         <div className="max-w-2xl space-y-5">
@@ -116,6 +133,11 @@ export function NoAlgorithmSection() {
           </div>
         </div>
       </div>
+
+      <p className="mt-14 max-w-2xl text-lg text-gray-300 leading-relaxed">
+        A feed optimised for attention is worth very little a year later. A feed that simply records
+        what was said, by whom, and when, gets more valuable the older it gets.
+      </p>
 
       <Evidence>
         useSocialFeed.ts returns posts from you and the people you follow in strict chain order.

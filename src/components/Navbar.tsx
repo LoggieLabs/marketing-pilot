@@ -5,9 +5,10 @@ import { Menu, X } from 'lucide-react';
 const APP_URL = 'https://app.loggielabs.com';
 
 const navLinks = [
-  { label: 'When it matters', hash: 'when-it-matters' },
+  { label: 'Why it’s different', hash: 'borrowed' },
   { label: 'What you get', hash: 'six-rooms' },
   { label: 'Proof', hash: 'prove-it' },
+  { label: 'When we’re gone', hash: 'outlives-us' },
   { label: "What it can't do", hash: 'cant-do-yet' },
 ];
 

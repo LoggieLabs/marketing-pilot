@@ -5,7 +5,9 @@ import { Footer } from './components/Footer';
 
 import { HeroSection } from './components/HeroSection';
 import { WhenItMattersSection } from './components/WhenItMattersSection';
-import { OnLoanSection } from './components/OnLoanSection';
+import { BorrowedSection } from './components/BorrowedSection';
+import { WhatSurvivesSection } from './components/WhatSurvivesSection';
+import { OutlivesUsSection } from './components/OutlivesUsSection';
 import { NoAccountSection } from './components/NoAccountSection';
 import { RoomsSection } from './components/RoomsSection';
 import { ProveItSection } from './components/ProveItSection';
@@ -22,9 +24,11 @@ import { StayInTouchSection } from './components/StayInTouchSection';
 /*
  * The page is built in four acts, and the split is deliberate:
  *
- *   WANT     the job, the situations it covers, the product, why it works so
- *   BELIEVE  three proofs a reader could actually go and run
- *   DECIDE   what it is worth, what is unfinished, our own bugs, the protocol
+ *   WANT     what it is for, why it differs, what you would keep
+ *   BELIEVE  the product, then three proofs a reader could actually run
+ *   TRUST    what happens when we are gone — the only question a continuity
+ *            promise has to answer, and the one most products never address
+ *   DECIDE   practical uses, what is unfinished, our own bugs, the protocol
  *
  * The order changed after review found the site answered "can I believe
  * Loggie?" long before it answered "why would I want Loggie?" — leaving a
@@ -67,16 +71,17 @@ import { StayInTouchSection } from './components/StayInTouchSection';
     <div className="min-h-screen bg-loggie-void text-white overflow-x-hidden">
       <Navbar />
       <main>
-        {/* Act one — the job, then the situations, then the product.
-            A reader has to recognise their own problem before any amount of
-            cryptography is interesting, so nothing structural runs before this. */}
+        {/* Act one — what this is for, before any mechanism. The primary
+            audience is a person keeping a record of their own life, not a
+            business preserving evidence; the evidence use cases are real but
+            they are examples inside that, not the definition of it. */}
         <HeroSection />
-        <WhenItMattersSection />
+        <BorrowedSection />
+        <WhatSurvivesSection />
+
+        {/* Act two — the product, and the shape of the record it keeps. */}
         <RoomsSection />
         <NoAlgorithmSection />
-
-        {/* Act two — why it works that way, and how you start. */}
-        <OnLoanSection />
         <NoAccountSection />
 
         {/* Act three — three things a reader could go and check themselves. */}
@@ -84,9 +89,12 @@ import { StayInTouchSection } from './components/StayInTouchSection';
         <GetItBackSection />
         <SealedSection />
 
-        {/* Act four — what it is worth, then what is unfinished, then the
-            machinery. Due diligence is earned, not front-loaded. */}
+        {/* Act four — the question a continuity promise has to answer, then
+            the practical uses, then diligence. */}
+        <OutlivesUsSection />
+        <WhenItMattersSection />
         <WhatItSavesSection />
+
         <CantDoYetSection />
         <OwnBugsSection />
         <EngineRoomSection />

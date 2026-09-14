@@ -188,20 +188,20 @@ def build_share_card() -> Image.Image:
 
     # Headline — the site's current H1, verbatim.
     h_font = font(FONT_BOLD, 82)
-    draw.text((pad, pad + 104), "Keep the record.", font=h_font, fill=WHITE)
-    draw.text((pad, pad + 200), "Prove it later.", font=h_font, fill=WHITE)
+    draw.text((pad, pad + 104), "Keep your piece", font=h_font, fill=WHITE)
+    draw.text((pad, pad + 200), "of history.", font=h_font, fill=WHITE)
 
     # Supporting line.
     b_font = font(FONT_REG, 27)
     draw.text(
         (pad, pad + 322),
-        "A private place for important files — recover them from",
+        "Your photos, writing, files and conversations — kept",
         font=b_font,
         fill=GRAY_300,
     )
     draw.text(
         (pad, pad + 360),
-        "another computer, and prove what existed when.",
+        "somewhere that belongs to you, not to a platform.",
         font=b_font,
         fill=GRAY_300,
     )

@@ -420,3 +420,64 @@ export const SEAL_AUDIT = {
   slots: 2,
   realRecipients: 1,
 } as const;
+
+/* ── The Covenant ────────────────────────────────────────────────────────
+   contracts/loggie-covenant — the constitutional layer, architecture
+   generation "Loggie0".
+
+   READ THIS BEFORE WRITING ANY COPY ABOUT IT. Its own README states
+   "Status: SPECIFICATION — no contracts, by design", and COVENANT.md states
+   "ratified in principle · not yet enforced by code". The contracts/
+   directory is empty on purpose. Nothing on this site may describe the
+   Covenant as deployed, enforced, live, or protecting anyone today.
+
+   What IS true today is narrower and measurable, and it is the part worth
+   leading with: opening a Loggie envelope is pure local cryptography over
+   bytes. openEnvelopeV3(envelope, secrets) takes two local arguments — no
+   provider, no contract, no gateway, no fetch — so the data layer already
+   satisfies the Covenant. The contract layer does not.
+   ─────────────────────────────────────────────────────────────────────── */
+
+export const COVENANT = {
+  status: 'Specification. Ratified in principle, not yet enforced by code.',
+  /** The defensible formulation, quoted from the spec. Do not broaden it. */
+  formulation:
+    'Protocol compatibility cannot be revoked. Access to Loggie Labs infrastructure can be. Moderation is allowed; erasure is not.',
+  source: 'contracts/loggie-covenant/package-docs/specs/COVENANT.md',
+  /** Measured, and the reason the claim above is not just an aspiration. */
+  measured:
+    'openEnvelopeV3(envelope, secrets) — two local arguments, no provider, no contract, no gateway, no fetch',
+  measuredSource: 'sdk/loggie-sdk/packages/core/src/crypto/envelope/open-v3.ts',
+} as const;
+
+/** The escape hatches that exist today, independent of Loggie Labs. */
+export const ESCAPE_HATCHES = [
+  {
+    what: 'The app itself is published as an immutable build',
+    detail:
+      'A content-addressed copy of the interface that nobody can alter after the fact, reachable through any public gateway.',
+    value: 'bafybeigwsgipomgtflk6hiqpge2dushrpkr7sg47eohkkghfqrz3mj4dyq',
+    source: 'products/loggie-app/.ipfs-builds.log (build of 2026-09-02)',
+  },
+  {
+    what: 'It resolves without our DNS',
+    detail:
+      'app.loggie.eth carries that build as its contenthash, verified serving through a public ENS gateway.',
+    value: 'app.loggie.eth',
+    source: '.agent/reviews/external-acceptance-run-01.md',
+  },
+  {
+    what: 'Your content is served by nodes we do not run',
+    detail:
+      'Four objects were fetched byte-exact from ipfs.io and dweb.link by an independent node after the originating machine went dark.',
+    value: 'Kubo 0.42.0, independent operator',
+    source: 'package-docs/research/RUX-F7_C3_INDEPENDENT_NODE.md',
+  },
+  {
+    what: 'Opening your own record needs nothing of ours',
+    detail:
+      'Decryption is local cryptography over bytes. No company, no server, no chain, no network — the bytes and your keys are the whole requirement.',
+    value: 'openEnvelopeV3(envelope, secrets)',
+    source: 'sdk/loggie-sdk/packages/core/src/crypto/envelope/open-v3.ts',
+  },
+] as const;

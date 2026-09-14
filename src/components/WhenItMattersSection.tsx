@@ -5,11 +5,12 @@ import { SectionHeading, Evidence, Caution } from './shared/Proof';
 /* ═══════════════════════════════════════════════════════════════════════
    WHEN DOES THIS MATTER?
 
-   Replaces the old "If you've ever needed to prove something" section, which
-   listed audiences. This lists SITUATIONS, and it runs second on the page —
-   before the architecture, before the philosophy — because a reader has to
-   recognise their own problem before any amount of cryptography is
-   interesting.
+   These are SITUATIONS rather than audiences. The section used to run second
+   on the page and define the product; it now runs after the continuity
+   material, as practical examples inside something larger. Leading with
+   insurance claims and document disputes made Loggie read as software for
+   professionals and businesses, which is the secondary market, not the
+   primary one.
 
    ACCURACY DISCIPLINE. These are evidence use cases, which makes them the
    easiest place on the whole site to overclaim. Two rules:
@@ -62,10 +63,15 @@ export function WhenItMattersSection() {
   return (
     <SectionWrapper id="when-it-matters">
       <SectionHeading
-        eyebrow="WHEN DOES THIS MATTER"
-        lede={<>Mostly, it matters before you know it does.</>}
+        eyebrow="ALSO, PRACTICALLY"
+        lede={
+          <>
+            The same record that outlives you is useful long before that. These are the situations
+            where people reach for it first.
+          </>
+        }
       >
-        The moment you think "I might need this later."
+        And when something needs proving.
       </SectionHeading>
 
       <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -80,10 +86,6 @@ export function WhenItMattersSection() {
           );
         })}
       </ul>
-
-      <p className="mt-12 max-w-2xl text-2xl sm:text-3xl font-semibold text-white leading-snug tracking-[-0.02em]">
-        Or you'd just like somewhere to put things that stays yours.
-      </p>
 
       {/* The honest boundary. Without this the section drifts into implying a
           legal outcome, which is exactly what the product's own certificate

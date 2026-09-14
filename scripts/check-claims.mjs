@@ -72,6 +72,32 @@ const BANNED = [
   // "trustless-gateway.link" is a real public IPFS gateway hostname, not a claim.
   [/\btrustless\b(?!-gateway)/i, 'overclaim — two operated services remain', []],
 
+  // ── Durability: objective, never warranty ─────────────────────────────
+  // The site's ambition is that a personal record outlives the platforms and
+  // eventually the people who made it. That is a design objective and is
+  // stated as one. Nobody can honestly say how long anything digital lasts,
+  // and a warranty here would be the first unfalsifiable sentence on a page
+  // whose whole argument is that its claims are checkable.
+  [/\b(will|shall) (survive|last|outlive|endure)\b/i,
+    'durability is an objective, not a warranty — say what it is built for, not what it will do',
+    [/\bnobody can\b|\bcannot\b|\bno one can\b|\bnot knowable\b|\bhow long\b/i]],
+  [/\b(guaranteed|guarantee[sd]?) to (last|survive|outlive)\b/i, 'no durability guarantee exists', []],
+  [/\b(a )?(thousand|1,?000|hundred|500) year/i,
+    'no span of years may be promised; state the design objective instead',
+    [/\bobjective\b|\bwhat it would take\b|\basking\b/i]],
+  [/\bfor ?ever\b|\bin perpetuity\b/i, 'nothing here lasts forever', [/\bnot\b|\bno\b|\bcannot\b/i]],
+
+  // ── The Covenant is a SPECIFICATION ───────────────────────────────────
+  // contracts/loggie-covenant states "SPECIFICATION — no contracts, by
+  // design" and COVENANT.md says "ratified in principle, not yet enforced by
+  // code". Its contracts directory is deliberately empty. Describing it as
+  // live, deployed or currently protecting anyone is the single worst claim
+  // this site could make, because it is exactly the one a reader cannot check.
+  [/\bcovenant\b[^.]{0,60}\b(protects?|enforces?|guarantees?|deployed|live|in effect|binding)\b/i,
+    'the Covenant is a specification, not yet enforced by code', [/\bnot\b|\byet\b|\bintention\b/i]],
+  [/\b(protected|governed|secured) by the covenant\b/i,
+    'the Covenant enforces nothing today', [/\bnot\b|\byet\b/i]],
+
   // ── Evidence and legal claims ─────────────────────────────────────────
   // The site now leads with evidence use cases — insurance, disputes, client
   // work — which is the easiest place on it to overclaim. A Loggie proof shows
