@@ -442,9 +442,17 @@ export const ANCHORS = {
    ─────────────────────────────────────────────────────────────────────── */
 
 export const SEAL_AUDIT = {
-  /** The real object that was fetched. Resolvable on any public IPFS gateway. */
+  /**
+   * The real object that was fetched. The old comment here claimed it was
+   * "resolvable on any public IPFS gateway" — that was never checked. On
+   * 2026-09-18 ipfs.io answered 429 for it, so the claim is narrowed to the
+   * gateway that was actually confirmed to serve it unauthenticated.
+   */
   cid: 'bafkreid7ikoojzvt7bwubz7h2l6kytpf4amr7is5iq6iupwux3m5i6zdwq',
+  gateway: 'https://storage.loggielabs.com/cid/',
   date: '2026-08-29',
+  /** Size on the wire, re-measured 2026-09-18. */
+  bytes: 5209,
   /** Every top-level key the object has. There are five. */
   present: ['ct', 'nonce', 'slots', 'suite', 'v'] as const,
   /** Confirmed absent by substring audit of the raw bytes. */
@@ -464,6 +472,39 @@ export const SEAL_AUDIT = {
   /** Slots carried for a single real recipient — the second is a decoy. */
   slots: 2,
   realRecipients: 1,
+} as const;
+
+/**
+ * Independent re-verification, run 2026-09-18 against the live gateway rather
+ * than against any internal document — the file object and both message legs
+ * were fetched unauthenticated and checked byte by byte.
+ *
+ * The load-bearing result is the first one. These are CIDv1 raw blocks
+ * (codec 0x55, sha2-256), so the CID *is* the hash of the bytes: fetch them,
+ * hash them yourself, and you get the same string back. That removes the
+ * gateway from the trust chain entirely, which is a stronger claim than any
+ * link we could offer, and it is the one the section should lead with.
+ */
+export const WIRE_RECHECK = {
+  date: '2026-09-18',
+  /** sha256(bytes) === the multihash digest inside the CID, all three objects. */
+  hashesMatch: true,
+  objects: 3,
+  /** Every object: exactly these five keys, suite 1, two slots, [pq, wrap, x]. */
+  shapeHeld: true,
+  /** Both slots serialise to the same length, so size cannot distinguish them. */
+  slotBytesEach: 2299,
+  /** The two legs of one message are different ciphertexts at the same size. */
+  legCiphertextsDiffer: true,
+  legBytes: 5929,
+  /**
+   * Substring sweep for leaked identifiers across all three objects. The only
+   * hits were the literal version string and two chance occurrences of "0x"
+   * inside base64 ciphertext — no 40-hex address, no filename, no address-like
+   * token, no recipients / hint / meta / scheme / messageId anywhere.
+   */
+  leakedIdentifiers: 0,
+  source: 'fetched from storage.loggielabs.com/cid/ and verified locally 2026-09-18',
 } as const;
 
 /* ── The Covenant ────────────────────────────────────────────────────────
@@ -499,10 +540,22 @@ export const COVENANT = {
 export const ESCAPE_HATCHES = [
   {
     what: 'The app itself is published as an immutable build',
+    /*
+     * Was "reachable through any public gateway". Checked 2026-09-18: that is
+     * not a claim we can make about infrastructure we do not run, and on the
+     * day it was checked ipfs.io and dweb.link both answered 429 from a normal
+     * connection. So it now names the independent gateway that did answer.
+     *
+     * What was confirmed, rather than assumed: trustless-gateway.link returned
+     * the root block, its SHA-256 matches the digest inside the CID, and the
+     * decoded dag-pb node lists index.html, assets, manifest.json, verify and
+     * the brand icons — the real build, from a host with no relationship to us.
+     */
     detail:
-      'A content-addressed copy of the interface that nobody can alter after the fact, reachable through any public gateway.',
+      'A content-addressed copy of the interface that nobody can alter after the fact. Served by trustless-gateway.link, an IPFS gateway we have nothing to do with, and the copy it returns hashes back to the same identifier.',
     value: 'bafybeigwsgipomgtflk6hiqpge2dushrpkr7sg47eohkkghfqrz3mj4dyq',
-    source: 'products/loggie-app/.ipfs-builds.log (build of 2026-09-02)',
+    source:
+      'products/loggie-app/.ipfs-builds.log (build of 2026-09-02); root block re-fetched and hash-verified from trustless-gateway.link 2026-09-18',
   },
   {
     what: 'It resolves without our DNS',
@@ -530,37 +583,76 @@ export const ESCAPE_HATCHES = [
 /* ── Message v3 ──────────────────────────────────────────────────────────
    The section this feeds, PROOF THREE, used to disclose that messaging rode
    the older loggie.seal.v2 envelope with routing hints in the clear. That
-   disclosure is what prompted the migration; it shipped 2026-09-18.
+   disclosure is what prompted the migration; it shipped in production on
+   2026-09-16 and became the default writer on 2026-09-18.
 
-   TWO SEPARATE RUNS, kept separate on purpose. The production smoke has the
-   block and the shape but records no CIDs and only a TRUNCATED transaction
-   hash (`0x07e8a9c812619f…`), so the transaction is named and not linked —
-   there is no full hash on record to link to. The two complete envelope CIDs
-   come from the earlier live-acceptance run at a different block. Presenting
-   them as one event would be a composite that never happened.
+   TWO RUNS, AND ONLY ONE OF THEM IS FULLY LINKABLE. The 2026-09-16 cutover
+   recorded everything — the full transaction, the block, and both envelope
+   CIDs — so that is the run a visitor can inspect end to end, and it leads.
+   The 2026-09-18 deployment is the milestone that made v3 the default; its
+   evidence doc records the wire shape and the block but NO CIDs and only a
+   truncated transaction hash, so its block is linked and its transaction is
+   not. A search of every evidence doc turns up exactly one full transaction
+   hash, and it is the 2026-09-16 one.
    ─────────────────────────────────────────────────────────────────────── */
 
 export const MESSAGE_V3 = {
   version: 'loggie.seal.v3',
-  /** Production smoke, one controlled reply. */
+
+  /** The inspectable run: one approval, one atomic batch, two inboxes. */
+  cutover: {
+    date: '2026-09-16',
+    messageId: '330d54e6-bd7a-4fc4-9214-5909eebe92c0',
+    tx: '0xc4ed2a89b525c0f59852a3da019d2f02b9ecfdfbbe6050711aad13979557c7b3',
+    block: 11718540,
+    recipientLeg: 'bafkreiaeigrdc4hhcao2qf6hxsvblgc3e5nmayp4c347chyw5np7yhni3m',
+    senderMirror: 'bafkreibkk5eounlqvzc7nldo2bmu7d5vm7lfos7mw46ubqf5kvrfxt34uy',
+    source: '.agent/reviews/message-v3-cutover-2026-09-16.md; confirmed on Sepolia in message-v3-repair-2026-09-17.md (status 1, two MessageCIDPosted logs)',
+  },
+
+  /** The deployment that made v3 the default writer. No CIDs recorded. */
   production: {
     date: '2026-09-18',
-    messageRef: 'f6aae1b4…',
+    messageRef: 'f6aae1b4\u2026',
     block: 11731632,
-    /** Truncated in the evidence doc. Deliberately not linked. */
-    txPrefix: '0x07e8a9c812619f…',
+    txPrefix: '0x07e8a9c812619f\u2026',
     legs: 2,
     bytesPerLeg: 5929,
     source: '.agent/reviews/deployment-classA-classB-2026-09-18.md',
   },
-  /** Earlier live acceptance — the run with both full envelope CIDs. */
-  liveAcceptance: {
-    date: '2026-09-15',
-    block: 11710655,
-    recipientEnvelope: 'bafkreidmk5pyext57o7cuacmnvyg3vwf4sytinc6oqjg5pploza5qx5jza',
-    senderMirror: 'bafkreigc3y56yuuszz4dnmmfnaghdjyqftslexew5vi33k4rhhd7fqu7vm',
-    source: '.agent/reviews/message-v3-live-acceptance.md',
-  },
+
   /** Confirmed absent from both legs on the wire. */
   absentOnWire: ['recipients', 'hint', 'meta', 'scheme', 'sender wallet', 'messageId'] as const,
 } as const;
+
+/* ── What requires post-quantum keys, and what does not ──────────────────
+   The page used to imply one uniform policy. There are three, and they
+   differ in ways a reader should be told apart.
+   ─────────────────────────────────────────────────────────────────────── */
+
+export const PQ_POLICY = [
+  {
+    operation: 'Sealing a shared conversation file',
+    rule: 'Requires ML-KEM. Fails closed.',
+    detail:
+      'sealConversationFile emits canonical seal.v3 and refuses outright if the post-quantum key is missing. There is no weaker path to fall back to.',
+  },
+  {
+    operation: 'Sending a new message',
+    rule: 'Written as v3.',
+    detail:
+      'The v3 writer is the default. Confidentiality is hybrid — X25519 combined with ML-KEM-1024 — so both have to be broken, not either.',
+  },
+  {
+    operation: 'Reading older messages',
+    rule: 'Permanent legacy surface.',
+    detail:
+      'The v2 reader is not going away. Messages written before the migration stay readable byte-identical rather than being rewritten underneath you.',
+  },
+  {
+    operation: 'Authorship',
+    rule: 'Classically signed, deliberately.',
+    detail:
+      'Live identities carry a post-quantum key for encryption, not for signing — there is no post-quantum signing key to sign with. Confidentiality is post-quantum; authorship is a wallet signature. We would rather say that than let "post-quantum" imply both.',
+  },
+] as const;

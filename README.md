@@ -54,7 +54,15 @@ trust us*, and that only survives if nothing on it overclaims.
    marketing image of its own app because it carried a fake VERIFIED badge; that
    line holds here. If a real capture does not exist, ship type and mono receipts
    instead — several sections do exactly that and say so in a comment.
-5. **The ratified vocabulary applies.** `tamper-evident` — never `tamper-proof`,
+5. **Never claim reachability on infrastructure you don't run.** "Resolvable
+   on any public IPFS gateway" sat beside a CID in `status.ts` for months and
+   had never been checked; on the day it was, ipfs.io answered `429` for every
+   CID on the page. Name the gateway that actually answered, or make the claim
+   that needs no gateway at all — these are CIDv1 raw blocks, so the identifier
+   is the SHA-256 of the bytes and a reader can verify them without trusting
+   any host. The second framing is both honest and stronger. Lint rule added;
+   verified figures live in `WIRE_RECHECK` in `status.ts`.
+6. **The ratified vocabulary applies.** `tamper-evident` — never `tamper-proof`,
    `unhackable` or `quantum-proof`. Never `audited` or `secure` while no outside
    firm has reviewed the code.
 

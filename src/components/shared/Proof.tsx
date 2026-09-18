@@ -118,6 +118,53 @@ export function Block({ value, className = '' }: { value: number; className?: st
   );
 }
 
+/**
+ * A content identifier.
+ *
+ * This first linked to ipfs.io on the reasoning that a proof should not point
+ * at our own infrastructure. The reasoning was right; the link was not checked.
+ * On 2026-09-18 ipfs.io answered 429 for all three of the CIDs on this page,
+ * so every "verify it yourself" link would have opened a rate-limit page — a
+ * worse outcome than the one it was avoiding.
+ *
+ * The resolution is better than either option. These are CIDv1 raw blocks
+ * (codec 0x55, sha2-256), so the identifier IS the hash of the bytes. Whoever
+ * serves them cannot serve anything else without the hash changing, which
+ * takes the gateway out of the trust chain completely. So this links to the
+ * gateway confirmed to answer — ours — and the copy beside it tells the reader
+ * to hash the bytes rather than to trust the host. Verified on 2026-09-18:
+ * sha256(bytes) matched the digest inside the CID for all three objects.
+ */
+export function Cid({ value, className = '' }: { value: string; className?: string }) {
+  const { copied, copy } = useCopy(value);
+  return (
+    <span className={`inline-flex items-center gap-1.5 ${className}`}>
+      <a
+        href={`https://storage.loggielabs.com/cid/${value}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={value}
+        className="mono text-2xs text-gray-300 hover:text-loggie-cyan transition-colors
+                   border-b border-gray-700 hover:border-loggie-cyan/60"
+      >
+        {truncate(value, 12, 6)}
+      </a>
+      <button
+        type="button"
+        onClick={copy}
+        aria-label={copied ? 'CID copied' : `Copy CID ${value}`}
+        className="text-gray-600 hover:text-gray-300 transition-colors"
+      >
+        {copied ? (
+          <Check className="w-3.5 h-3.5 text-green-400" aria-hidden="true" />
+        ) : (
+          <Copy className="w-3.5 h-3.5" aria-hidden="true" />
+        )}
+      </button>
+    </span>
+  );
+}
+
 /* ── The proof rule ─────────────────────────────────────────────────── */
 
 /**

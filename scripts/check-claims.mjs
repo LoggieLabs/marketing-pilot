@@ -144,6 +144,17 @@ const BANNED = [
   [/docs\.loggie\.(io|xyz)/i, 'domain does not exist', []],
   [/github\.com\/loggie-xyz/i, 'organisation does not exist; it is LoggieLabs', []],
   [/localhost:3333|127\.0\.0\.1:4173/, 'internal-only service; never link it publicly', []],
+  // ── Gateway reachability: added 2026-09-18 after this exact overclaim ──
+  // status.ts carried "Resolvable on any public IPFS gateway" beside a CID.
+  // Nobody had checked, and on the day it was checked ipfs.io answered 429
+  // for all three CIDs on the page. "Anyone can fetch it" is a claim about
+  // somebody else's infrastructure on somebody else's rate limit, and it is
+  // not ours to make. Name the gateway that was actually confirmed, or say
+  // the CID is a content hash — that claim is true without any gateway.
+  [/\b(any|every|all)\s+(public\s+)?(IPFS\s+)?gateways?\b/i,
+    'claims reachability on gateways we do not run and did not verify',
+    [/\bnot\b[^.]{0,40}\b(any|every|all)\s+(public\s+)?(IPFS\s+)?gateways?\b/i,
+     /\bgateway\s+(confirmed|verified|that answered)\b/i]],
 ];
 
 /** Chain references must carry their qualifier in the same breath. */
