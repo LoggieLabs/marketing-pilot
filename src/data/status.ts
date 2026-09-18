@@ -17,7 +17,7 @@
    not a mailbox, before launch.)
    ═══════════════════════════════════════════════════════════════════════ */
 
-export const LAST_VERIFIED = '2026-09-11';
+export const LAST_VERIFIED = '2026-09-18';
 export const CONTACT = 'security@loggielabs.com';
 
 export interface Capability {
@@ -93,10 +93,10 @@ export const SHIPPED: Capability[] = [
 /** Real, but narrower than it sounds. Say the boundary out loud. */
 export const PARTIAL: Capability[] = [
   {
-    name: 'Metadata-blind sealing covers Files, Journal and the contacts vault',
+    name: 'Metadata-blind sealing now covers messages and shared files too',
     detail:
-      'Messaging deliberately stays on the older loggie.seal.v2 envelope, which carries routing hints in the clear. The five-field claim does not extend to Messages.',
-    source: 'SEAL_V3_ADOPTION_MATRIX.md row 19 — "LEG — INTENTIONALLY NOT SEAL-V3"',
+      'As of 2026-09-18 messages ship on loggie.seal.v3: one independently sealed envelope per destination including the sender\u2019s own copy, five public fields, distinct CIDs. What it does not hide is the Sepolia transaction that carries it — see "Messaging is not anonymous" below.',
+    source: 'deployment-classA-classB-2026-09-18.md; message-v3-live-acceptance.md',
   },
   {
     name: 'Cross-device recovery is demonstrated, not proven',
@@ -201,11 +201,14 @@ export const LIMITS: Limit[] = [
     source: 'SEAL_V3_ADOPTION_MATRIX known data-loss boundary',
   },
   {
-    kind: 'deliberate',
-    headline: "Messages don't get the metadata-blind envelope.",
+    // Replaces "Messages don't get the metadata-blind envelope", which shipped
+    // on 2026-09-18 and is no longer true. The limitation that remains is real
+    // and narrower: the envelope is blind, the transaction is not.
+    kind: 'structural',
+    headline: 'Messaging is not anonymous.',
     detail:
-      'Files, Journal and the contacts vault do. Messaging deliberately stays on an older envelope that carries routing hints in the clear.',
-    source: 'SEAL_V3_ADOPTION_MATRIX row 19',
+      'Message contents and envelope metadata are encrypted before upload. The blockchain still records transactions that can reveal which wallet posted to which inbox, and when. Message v3 removes public routing hints from the sealed object; it does not conceal transaction activity.',
+    source: 'deployment-classA-classB-2026-09-18.md — sender wallet not on the wire; delivery is one Sepolia transaction',
   },
   {
     kind: 'deliberate',
@@ -523,3 +526,41 @@ export const ESCAPE_HATCHES = [
     source: 'sdk/loggie-sdk/packages/core/src/crypto/envelope/open-v3.ts',
   },
 ] as const;
+
+/* ── Message v3 ──────────────────────────────────────────────────────────
+   The section this feeds, PROOF THREE, used to disclose that messaging rode
+   the older loggie.seal.v2 envelope with routing hints in the clear. That
+   disclosure is what prompted the migration; it shipped 2026-09-18.
+
+   TWO SEPARATE RUNS, kept separate on purpose. The production smoke has the
+   block and the shape but records no CIDs and only a TRUNCATED transaction
+   hash (`0x07e8a9c812619f…`), so the transaction is named and not linked —
+   there is no full hash on record to link to. The two complete envelope CIDs
+   come from the earlier live-acceptance run at a different block. Presenting
+   them as one event would be a composite that never happened.
+   ─────────────────────────────────────────────────────────────────────── */
+
+export const MESSAGE_V3 = {
+  version: 'loggie.seal.v3',
+  /** Production smoke, one controlled reply. */
+  production: {
+    date: '2026-09-18',
+    messageRef: 'f6aae1b4…',
+    block: 11731632,
+    /** Truncated in the evidence doc. Deliberately not linked. */
+    txPrefix: '0x07e8a9c812619f…',
+    legs: 2,
+    bytesPerLeg: 5929,
+    source: '.agent/reviews/deployment-classA-classB-2026-09-18.md',
+  },
+  /** Earlier live acceptance — the run with both full envelope CIDs. */
+  liveAcceptance: {
+    date: '2026-09-15',
+    block: 11710655,
+    recipientEnvelope: 'bafkreidmk5pyext57o7cuacmnvyg3vwf4sytinc6oqjg5pploza5qx5jza',
+    senderMirror: 'bafkreigc3y56yuuszz4dnmmfnaghdjyqftslexew5vi33k4rhhd7fqu7vm',
+    source: '.agent/reviews/message-v3-live-acceptance.md',
+  },
+  /** Confirmed absent from both legs on the wire. */
+  absentOnWire: ['recipients', 'hint', 'meta', 'scheme', 'sender wallet', 'messageId'] as const,
+} as const;
