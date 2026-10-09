@@ -14,9 +14,10 @@ import { CONTRACT_MAP } from '../data/status';
    flex: a page that has spent eight sections being warm can afford one
    section that is simply exact.
 
-   This section carries the second of the site's three permitted uses of the
-   brand gradient — one hairline, under the four-part structure. The wordmark
-   and the scrollbar are the other two. Do not add a third here.
+   This section carries one of the site's two permitted uses of the brand
+   gradient — one hairline, under the four-part structure. The scrollbar is the
+   other. The wordmark was the third until it became drawn artwork, in the
+   logo's own palette. Do not add a third back here.
    ═══════════════════════════════════════════════════════════════════════ */
 
 export function EngineRoomSection() {

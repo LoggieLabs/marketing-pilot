@@ -82,7 +82,8 @@ body.marketing-page {
   border-radius: 4px;
 }
 
-/* Scrollbar — one of the three permitted uses of the brand gradient. */
+/* Scrollbar — one of the two permitted uses of the brand gradient. The third
+   was the wordmark, which is now drawn artwork and carries no gradient. */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -118,12 +119,6 @@ body.marketing-page {
     @apply w-full px-4 py-3 bg-loggie-black border border-gray-700 rounded-lg
            text-white placeholder-gray-500 focus:outline-none focus:ring-2
            focus:ring-loggie-purple focus:border-transparent text-base;
-  }
-
-  /* The brand gradient. Used in exactly three places site-wide: the wordmark,
-     one hairline in the engine-room section, and the scrollbar thumb. */
-  .gradient-text {
-    @apply bg-gradient-to-r from-loggie-purple to-loggie-cyan bg-clip-text text-transparent;
   }
 
   /* Monospace is content on this site: addresses, CIDs, hashes, blocks. */

@@ -44,7 +44,18 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="text-xl font-bold gradient-text">Loggie</p>
+            {/*
+              The lockup, not the word set in Inter. It is drawn at 32px tall,
+              which is 125px wide — the logo sheet puts the lockup minimum at
+              112px and says to use the mark alone below that.
+            */}
+            <img
+              src="/loggie-wordmark.png"
+              alt="Loggie"
+              width={960}
+              height={246}
+              className="h-8 w-auto"
+            />
             <p className="mt-2 text-sm text-gray-400 leading-relaxed max-w-xs">
               Your identity, inbox, files and people. Owned by you.
             </p>
