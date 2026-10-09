@@ -54,8 +54,8 @@ export function Navbar() {
             <img
               src="/loggie-wordmark.png"
               alt="Loggie"
-              width={324}
-              height={120}
+              width={960}
+              height={246}
               className="h-7 sm:h-8 md:h-9 w-auto"
             />
           </Link>
